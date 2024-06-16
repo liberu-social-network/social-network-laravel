@@ -127,5 +127,5 @@ This project is licensed under the MIT license, granting you the freedom to util
 ## Contributors
 
 
-<a href = "https://github.com/liberu-social-network/boilerplate-laravel/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo=liberu-social-network/boilerplate-laravel"/>
+<a href = "https://github.com/liberu-social-network/social-network-laravel/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=liberu-social-network/social-network-laravel"/>
