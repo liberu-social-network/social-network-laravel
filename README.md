@@ -9,9 +9,12 @@
 ![](https://img.shields.io/badge/JavaScript-ECMA2020-informational?style=flat&logo=JavaScript&color=F7DF1E)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+
 [![Install](https://github.com/liberu-social-network/social-network-laravel/actions/workflows/install.yml/badge.svg)](https://github.com/liberu-social-network/social-network-laravel/actions/workflows/install.yml)
 [![Tests](https://github.com/liberu-social-network/social-network-laravel/actions/workflows/tests.yml/badge.svg)](https://github.com/liberu-social-network/social-network-laravel/actions/workflows/tests.yml)
 [![Docker](https://github.com/liberu-social-network/social-network-laravel/actions/workflows/main.yml/badge.svg)](https://github.com/liberu-social-network/social-network-laravel/actions/workflows/main.yml)
+
+## [Hosted application packages](https://liberu.co.uk/order/main/packages/applications/?group_id=3)
 
 ## Overview
 
