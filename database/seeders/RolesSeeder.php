@@ -13,10 +13,19 @@ class RolesSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        // Create super_admin role (as defined in Shield config)
+        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
         $permissions = Permission::where('guard_name', 'web')->pluck('id')->toArray();
+        $superAdminRole->syncPermissions($permissions);
+
+        // Create admin role
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $adminRole->syncPermissions($permissions);
 
+        // Create panel_user role (as defined in Shield config)
+        $panelUserRole = Role::firstOrCreate(['name' => 'panel_user']);
+        
+        // Create free role
         $freeRole = Role::firstOrCreate(['name' => 'free']);
         $freePermissions = Permission::where('guard_name', 'web')->pluck('id')->toArray();
         $freeRole->syncPermissions($freePermissions);
