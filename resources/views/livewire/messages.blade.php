@@ -103,7 +103,7 @@
                             </button>
                         </form>
                         @error('messageContent') 
-                            <span class="text-red-500 text-sm">{{ $message }}</span> 
+                            <span class="text-red-500 text-sm">{{ $errors->first('messageContent') }}</span> 
                         @enderror
                     </div>
                 @else

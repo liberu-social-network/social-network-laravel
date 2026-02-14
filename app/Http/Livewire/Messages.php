@@ -63,7 +63,7 @@ class Messages extends Component
     {
         $userId = Auth::id();
         
-        return User::whereHas('sentMessages', function ($query) use ($userId) {
+        $usersWithMessages = User::whereHas('sentMessages', function ($query) use ($userId) {
                 $query->where('receiver_id', $userId);
             })
             ->orWhereHas('receivedMessages', function ($query) use ($userId) {
@@ -72,11 +72,15 @@ class Messages extends Component
             ->when($this->searchTerm, function ($query) {
                 $query->where('name', 'like', '%' . $this->searchTerm . '%');
             })
-            ->withCount(['receivedMessages' => function ($query) use ($userId) {
-                $query->where('sender_id', $userId)
-                    ->whereNull('read_at');
-            }])
             ->get();
+
+        return $usersWithMessages->map(function ($user) use ($userId) {
+            $user->received_messages_count = Message::where('sender_id', $user->id)
+                ->where('receiver_id', $userId)
+                ->whereNull('read_at')
+                ->count();
+            return $user;
+        });
     }
 
     public function getMessagesProperty()
