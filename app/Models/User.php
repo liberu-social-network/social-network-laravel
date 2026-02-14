@@ -123,4 +123,167 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     {
         return $this->belongsTo(Team::class, 'current_team_id');
     }
+
+    // Friend request relationships
+    public function sentFriendRequests()
+    {
+        return $this->hasMany(Friendship::class, 'requester_id');
+    }
+
+    public function receivedFriendRequests()
+    {
+        return $this->hasMany(Friendship::class, 'addressee_id');
+    }
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'requester_id', 'addressee_id')
+            ->wherePivot('status', 'accepted')
+            ->withTimestamps()
+            ->union(
+                $this->belongsToMany(User::class, 'friendships', 'addressee_id', 'requester_id')
+                    ->wherePivot('status', 'accepted')
+                    ->withTimestamps()
+            );
+    }
+
+    // Follower relationships
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id')
+            ->withTimestamps();
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id')
+            ->withTimestamps();
+    }
+
+    // Friend request methods
+    public function sendFriendRequest(User $user)
+    {
+        if ($this->id === $user->id) {
+            return false;
+        }
+
+        if ($this->hasFriendRequestPending($user) || $this->isFriendWith($user)) {
+            return false;
+        }
+
+        return Friendship::create([
+            'requester_id' => $this->id,
+            'addressee_id' => $user->id,
+            'status' => 'pending',
+        ]);
+    }
+
+    public function acceptFriendRequest(User $user)
+    {
+        $friendship = Friendship::where('requester_id', $user->id)
+            ->where('addressee_id', $this->id)
+            ->where('status', 'pending')
+            ->first();
+
+        if ($friendship) {
+            $friendship->update(['status' => 'accepted']);
+            return $friendship;
+        }
+
+        return false;
+    }
+
+    public function rejectFriendRequest(User $user)
+    {
+        $friendship = Friendship::where('requester_id', $user->id)
+            ->where('addressee_id', $this->id)
+            ->where('status', 'pending')
+            ->first();
+
+        if ($friendship) {
+            $friendship->update(['status' => 'declined']);
+            return $friendship;
+        }
+
+        return false;
+    }
+
+    public function hasFriendRequestPending(User $user)
+    {
+        return Friendship::where(function ($query) use ($user) {
+            $query->where('requester_id', $this->id)
+                ->where('addressee_id', $user->id);
+        })->orWhere(function ($query) use ($user) {
+            $query->where('requester_id', $user->id)
+                ->where('addressee_id', $this->id);
+        })->where('status', 'pending')->exists();
+    }
+
+    public function isFriendWith(User $user)
+    {
+        return Friendship::where(function ($query) use ($user) {
+            $query->where('requester_id', $this->id)
+                ->where('addressee_id', $user->id);
+        })->orWhere(function ($query) use ($user) {
+            $query->where('requester_id', $user->id)
+                ->where('addressee_id', $this->id);
+        })->where('status', 'accepted')->exists();
+    }
+
+    // Follower methods
+    public function follow(User $user)
+    {
+        if ($this->id === $user->id) {
+            return false;
+        }
+
+        if ($this->isFollowing($user)) {
+            return false;
+        }
+
+        return Follower::create([
+            'follower_id' => $this->id,
+            'following_id' => $user->id,
+        ]);
+    }
+
+    public function unfollow(User $user)
+    {
+        return Follower::where('follower_id', $this->id)
+            ->where('following_id', $user->id)
+            ->delete();
+    }
+
+    public function isFollowing(User $user)
+    {
+        return Follower::where('follower_id', $this->id)
+            ->where('following_id', $user->id)
+            ->exists();
+    }
+
+    public function isFollowedBy(User $user)
+    {
+        return Follower::where('follower_id', $user->id)
+            ->where('following_id', $this->id)
+            ->exists();
+    }
+
+    // Count methods
+    public function getFriendsCountAttribute()
+    {
+        return Friendship::where(function ($query) {
+            $query->where('requester_id', $this->id)
+                ->orWhere('addressee_id', $this->id);
+        })->where('status', 'accepted')->count();
+    }
+
+    public function getFollowersCountAttribute()
+    {
+        return $this->followers()->count();
+    }
+
+    public function getFollowingCountAttribute()
+    {
+        return $this->following()->count();
+    }
 }
