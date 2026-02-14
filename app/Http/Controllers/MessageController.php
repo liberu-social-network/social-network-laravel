@@ -57,15 +57,9 @@ class MessageController extends Controller
 
     public function show(Message $message)
     {
-        $user = Auth::user();
+        $this->authorize('view', $message);
 
-        if ($message->sender_id !== $user->id && $message->receiver_id !== $user->id) {
-            return response()->json([
-                'error' => 'Unauthorized'
-            ], 403);
-        }
-
-        if ($message->receiver_id === $user->id && !$message->isRead()) {
+        if ($message->receiver_id === Auth::id() && !$message->isRead()) {
             $message->markAsRead();
         }
 
@@ -94,13 +88,7 @@ class MessageController extends Controller
 
     public function destroy(Message $message)
     {
-        $user = Auth::user();
-
-        if ($message->sender_id !== $user->id && $message->receiver_id !== $user->id) {
-            return response()->json([
-                'error' => 'Unauthorized'
-            ], 403);
-        }
+        $this->authorize('delete', $message);
 
         $message->delete();
 
