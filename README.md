@@ -71,15 +71,71 @@ Notes:
 - The provided `setup.sh` automates install and seeding; it may overwrite `.env` if you consent.
 - Ensure `.env` DB settings are correct before running migrations.
 
+## API Documentation
+
+The friend request and follower system includes a comprehensive RESTful API. See the [API documentation](docs/FRIEND_FOLLOWER_API.md) for details on:
+
+- Friend request endpoints (send, accept, reject)
+- Follower endpoints (follow, unfollow)
+- User search endpoint
+- Authentication and error handling
+
 ## Features
 
+- **Authentication** (Jetstream with Socialstream)
+- **User Profiles** with avatars and bios
+- **Friend Request System**
+  - Send, accept, and reject friend requests
+  - View friends list and pending requests
+  - Friend count displayed on profiles
+- **Follower System**
+  - Follow and unfollow other users
+  - View followers and following lists
+  - Follower/following counts on profiles
+- **User Search**
+  - Search users by name or email
+  - Quick actions to add friends or follow users
+- **Private Messaging**
+- **Real-time Notifications**
+- **Admin Panel** (Filament)
+  - Manage friend requests and followers
+  - User statistics widget
+  - Comprehensive resource management
+- **RESTful API**
+  - Complete API for friend requests
+  - Follower management endpoints
+  - User search API
+  - Full API documentation available
+- **Modular Architecture** for easy extensions
 - Authentication (Jetstream)
 - Profiles with avatars and bios
 - Private messaging
 - Real-time notifications
 - Search (users, posts)
-- Admin panel (Filament)
+- **Admin panel (Filament)** with advanced features:
+  - User management with role-based access control
+  - Role and permission management via Filament Shield
+  - Email verification management
+  - Account status controls
+  - Module management
+  - Menu management
 - Modular architecture for easy extensions
+
+### Admin Panel
+
+The admin panel is accessible at `/admin` and provides comprehensive management capabilities:
+
+- **User Management**: Create, edit, and delete users with role assignment
+- **Role & Permission System**: Powered by Spatie Laravel Permission and Filament Shield
+  - Super Admin: Full system access
+  - Admin: Standard administrative privileges
+  - Panel User: Basic panel access
+  - Free: Limited view-only permissions
+- **Dashboard**: Overview of system statistics and quick actions
+- **Module System**: Enable/disable application modules
+- **Menu Management**: Configure navigation menus
+
+For detailed documentation, see [Admin Panel User Management Guide](docs/ADMIN_PANEL_USER_MANAGEMENT.md)
 
 ## Related projects
 
