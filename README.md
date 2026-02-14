@@ -78,8 +78,30 @@ Notes:
 - Private messaging
 - Real-time notifications
 - Search (users, posts)
-- Admin panel (Filament)
+- **Admin panel (Filament)** with advanced features:
+  - User management with role-based access control
+  - Role and permission management via Filament Shield
+  - Email verification management
+  - Account status controls
+  - Module management
+  - Menu management
 - Modular architecture for easy extensions
+
+### Admin Panel
+
+The admin panel is accessible at `/admin` and provides comprehensive management capabilities:
+
+- **User Management**: Create, edit, and delete users with role assignment
+- **Role & Permission System**: Powered by Spatie Laravel Permission and Filament Shield
+  - Super Admin: Full system access
+  - Admin: Standard administrative privileges
+  - Panel User: Basic panel access
+  - Free: Limited view-only permissions
+- **Dashboard**: Overview of system statistics and quick actions
+- **Module System**: Enable/disable application modules
+- **Menu Management**: Configure navigation menus
+
+For detailed documentation, see [Admin Panel User Management Guide](docs/ADMIN_PANEL_USER_MANAGEMENT.md)
 
 ## Related projects
 
