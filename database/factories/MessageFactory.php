@@ -21,6 +21,21 @@ class MessageFactory extends Factory
             'sender_id' => User::factory(),
             'receiver_id' => User::factory(),
             'content' => $this->faker->paragraph,
+            'read_at' => null,
         ];
+    }
+
+    public function read(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'read_at' => $this->faker->dateTimeBetween('-1 week', 'now'),
+        ]);
+    }
+
+    public function unread(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'read_at' => null,
+        ]);
     }
 }
