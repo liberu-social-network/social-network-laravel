@@ -13,21 +13,38 @@ class RolesSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create super_admin role (as defined in Shield config)
+        // Get all available permissions
+        $allPermissions = Permission::where('guard_name', 'web')->pluck('id')->toArray();
+
+        // Create super_admin role (as defined in Shield config) with all permissions
         $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
-        $permissions = Permission::where('guard_name', 'web')->pluck('id')->toArray();
-        $superAdminRole->syncPermissions($permissions);
+        $superAdminRole->syncPermissions($allPermissions);
 
-        // Create admin role
+        // Create admin role with all permissions (can be customized later)
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $adminRole->syncPermissions($permissions);
+        $adminRole->syncPermissions($allPermissions);
 
-        // Create panel_user role (as defined in Shield config)
+        // Create panel_user role (as defined in Shield config) - basic panel access
         $panelUserRole = Role::firstOrCreate(['name' => 'panel_user']);
+        // Panel users get view-only permissions by default
+        $viewPermissions = Permission::where('guard_name', 'web')
+            ->where('name', 'like', 'ViewAny::%')
+            ->orWhere('name', 'like', 'View::%')
+            ->pluck('id')
+            ->toArray();
+        $panelUserRole->syncPermissions($viewPermissions);
         
-        // Create free role
+        // Create free role - limited permissions for free tier users
         $freeRole = Role::firstOrCreate(['name' => 'free']);
-        $freePermissions = Permission::where('guard_name', 'web')->pluck('id')->toArray();
+        // Free users only get basic view permissions, no user management
+        $freePermissions = Permission::where('guard_name', 'web')
+            ->where(function ($query) {
+                $query->where('name', 'like', 'ViewAny::%')
+                      ->orWhere('name', 'like', 'View::%');
+            })
+            ->where('name', 'not like', '%User%') // Exclude user management
+            ->pluck('id')
+            ->toArray();
         $freeRole->syncPermissions($freePermissions);
     }
 }
