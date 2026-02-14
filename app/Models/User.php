@@ -123,4 +123,32 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     {
         return $this->belongsTo(Team::class, 'current_team_id');
     }
+
+    public function privacySettings()
+    {
+        return $this->hasOne(UserPrivacySetting::class);
+    }
+
+    public function isFriendsWith(User $user): bool
+    {
+        return Friendship::where(function ($query) use ($user) {
+            $query->where('requester_id', $this->id)
+                ->where('addressee_id', $user->id);
+        })->orWhere(function ($query) use ($user) {
+            $query->where('requester_id', $user->id)
+                ->where('addressee_id', $this->id);
+        })->where('status', 'accepted')->exists();
+    }
+
+    /**
+     * Get or create privacy settings for the user.
+     */
+    public function getPrivacySettings(): UserPrivacySetting
+    {
+        if (!$this->privacySettings) {
+            $this->privacySettings()->create([]);
+        }
+
+        return $this->privacySettings;
+    }
 }
