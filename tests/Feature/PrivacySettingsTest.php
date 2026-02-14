@@ -16,7 +16,7 @@ class PrivacySettingsTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $privacySettings = UserPrivacySetting::create(['user_id' => $user->id]);
+        $privacySettings = $user->getPrivacySettings();
 
         $this->assertEquals('public', $privacySettings->profile_visibility);
         $this->assertFalse($privacySettings->show_email);
@@ -30,7 +30,7 @@ class PrivacySettingsTest extends TestCase
     public function test_user_can_update_privacy_settings(): void
     {
         $user = User::factory()->create();
-        $privacySettings = UserPrivacySetting::create(['user_id' => $user->id]);
+        $privacySettings = $user->getPrivacySettings();
 
         $privacySettings->update([
             'profile_visibility' => 'private',
@@ -42,13 +42,14 @@ class PrivacySettingsTest extends TestCase
             'show_online_status' => false,
         ]);
 
-        $this->assertEquals('private', $privacySettings->fresh()->profile_visibility);
-        $this->assertTrue($privacySettings->fresh()->show_email);
-        $this->assertFalse($privacySettings->fresh()->show_birth_date);
-        $this->assertFalse($privacySettings->fresh()->show_location);
-        $this->assertFalse($privacySettings->fresh()->allow_friend_requests);
-        $this->assertFalse($privacySettings->fresh()->allow_messages_from_non_friends);
-        $this->assertFalse($privacySettings->fresh()->show_online_status);
+        $refreshed = $privacySettings->fresh();
+        $this->assertEquals('private', $refreshed->profile_visibility);
+        $this->assertTrue($refreshed->show_email);
+        $this->assertFalse($refreshed->show_birth_date);
+        $this->assertFalse($refreshed->show_location);
+        $this->assertFalse($refreshed->allow_friend_requests);
+        $this->assertFalse($refreshed->allow_messages_from_non_friends);
+        $this->assertFalse($refreshed->show_online_status);
     }
 
     public function test_public_profile_is_visible_to_everyone(): void
@@ -190,10 +191,12 @@ class PrivacySettingsTest extends TestCase
             'profile_visibility' => 'private',
             'show_birth_date' => true,
             'show_location' => true,
+            'show_online_status' => true,
         ]);
 
         $this->assertFalse($privacySettings->shouldShowBirthDateTo($viewer));
         $this->assertFalse($privacySettings->shouldShowLocationTo($viewer));
+        $this->assertFalse($privacySettings->shouldShowOnlineStatusTo($viewer));
     }
 
     public function test_get_privacy_settings_creates_settings_if_not_exists(): void

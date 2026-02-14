@@ -112,7 +112,7 @@ class UserPrivacySetting extends Model
      */
     public function shouldShowOnlineStatusTo(?User $viewer): bool
     {
-        if (!$viewer) {
+        if (!$viewer || !$this->isProfileVisibleTo($viewer)) {
             return false;
         }
 
