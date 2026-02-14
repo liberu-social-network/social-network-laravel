@@ -124,6 +124,30 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         return $this->belongsTo(Team::class, 'current_team_id');
     }
 
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants')
+            ->withPivot('joined_at', 'left_at', 'last_read_at')
+            ->withTimestamps();
+    }
+
+    public function activeConversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants')
+            ->wherePivotNull('left_at')
+            ->withPivot('joined_at', 'last_read_at')
+            ->withTimestamps();
+    }
     // Friend request relationships
     public function sentFriendRequests()
     {

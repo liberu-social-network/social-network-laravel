@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -24,6 +26,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Messages
+    Route::get('/messages', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
+    Route::get('/messages/unread-count', [MessageController::class, 'unreadCount']);
+    Route::get('/messages/conversation/{user}', [MessageController::class, 'conversation']);
+    Route::get('/messages/{message}', [MessageController::class, 'show']);
+    Route::delete('/messages/{message}', [MessageController::class, 'destroy']);
+    
+    // Message Reactions
+    Route::post('/messages/{message}/reactions', [MessageController::class, 'addReaction']);
+    Route::delete('/messages/{message}/reactions/{emoji}', [MessageController::class, 'removeReaction']);
+    
+    // Typing Indicator
+    Route::post('/messages/typing', [MessageController::class, 'typing']);
+    
+    // Conversations
+    Route::get('/conversations', [ConversationController::class, 'index']);
+    Route::post('/conversations', [ConversationController::class, 'store']);
+    Route::get('/conversations/{conversation}', [ConversationController::class, 'show']);
+    Route::get('/conversations/{conversation}/messages', [MessageController::class, 'conversationMessages']);
+    Route::post('/conversations/{conversation}/participants', [ConversationController::class, 'addParticipants']);
+    Route::delete('/conversations/{conversation}/participants/{user}', [ConversationController::class, 'removeParticipant']);
+});
+
     // Feed routes
     Route::get('/feed', [FeedController::class, 'index']);
     Route::get('/timeline/{userId}', [FeedController::class, 'timeline']);
