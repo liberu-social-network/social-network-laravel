@@ -220,6 +220,12 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     }
 
     public function isFriendWith(User $user)
+    public function privacySettings()
+    {
+        return $this->hasOne(UserPrivacySetting::class);
+    }
+
+    public function isFriendsWith(User $user): bool
     {
         return Friendship::where(function ($query) use ($user) {
             $query->where('requester_id', $this->id)
@@ -285,5 +291,11 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     public function getFollowingCountAttribute()
     {
         return $this->following()->count();
+    /**
+     * Get or create privacy settings for the user.
+     */
+    public function getPrivacySettings(): UserPrivacySetting
+    {
+        return $this->privacySettings()->firstOrCreate(['user_id' => $this->id]);
     }
 }

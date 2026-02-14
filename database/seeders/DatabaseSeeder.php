@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // SiteSettingsSeeder::class,
             // PermissionsSeeder::class,
+            ShieldSeeder::class,
             MenuSeeder::class,
             RolesSeeder::class,
         ]);
@@ -27,6 +28,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make("password"),
         ]);
-        $user->assignRole('admin');
+        $user->assignRole('super_admin');
     }
 }
