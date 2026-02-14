@@ -208,4 +208,24 @@ class PrivacySettingsTest extends TestCase
         $this->assertInstanceOf(UserPrivacySetting::class, $privacySettings);
         $this->assertEquals($user->id, $privacySettings->user_id);
     }
+
+    public function test_privacy_settings_are_created_on_user_registration(): void
+    {
+        // Simulate user registration
+        $userData = [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->post('/register', $userData);
+
+        $user = User::where('email', 'test@example.com')->first();
+        $this->assertNotNull($user);
+        
+        // Privacy settings should be automatically created
+        $this->assertNotNull($user->privacySettings);
+        $this->assertEquals('public', $user->privacySettings->profile_visibility);
+    }
 }
