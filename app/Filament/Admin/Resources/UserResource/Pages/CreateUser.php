@@ -17,7 +17,7 @@ class CreateUser extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Ensure email_verified_at is set for new users if not specified
-        if (!isset($data['email_verified_at']) || empty($data['email_verified_at'])) {
+        if (empty($data['email_verified_at'])) {
             $data['email_verified_at'] = null;
         }
 
