@@ -1,0 +1,119 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+
+class PostController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        $posts = Post::with(['user', 'comments.user', 'likes', 'shares'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return response()->json($posts);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'content' => 'required_without_all:image,video|string|max:5000',
+            'image' => 'nullable|image|max:10240', // 10MB max
+            'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:51200', // 50MB max
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $mediaType = 'text';
+        $imageUrl = null;
+        $videoUrl = null;
+
+        if ($request->hasFile('image')) {
+            $imageUrl = $request->file('image')->store('posts/images', 'public');
+            $mediaType = 'image';
+        }
+
+        if ($request->hasFile('video')) {
+            $videoUrl = $request->file('video')->store('posts/videos', 'public');
+            $mediaType = $request->hasFile('image') ? 'mixed' : 'video';
+        }
+
+        $post = Post::create([
+            'user_id' => auth()->id(),
+            'content' => $request->content,
+            'image_url' => $imageUrl,
+            'video_url' => $videoUrl,
+            'media_type' => $mediaType,
+        ]);
+
+        $post->load(['user', 'comments.user', 'likes', 'shares']);
+
+        return response()->json($post, 201);
+    }
+
+    public function show($id)
+    {
+        $post = Post::with(['user', 'comments.user', 'likes.user', 'shares.user'])
+            ->findOrFail($id);
+
+        return response()->json($post);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+
+        if ($post->user_id !== auth()->id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string|max:5000',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $post->update([
+            'content' => $request->content,
+        ]);
+
+        $post->load(['user', 'comments.user', 'likes', 'shares']);
+
+        return response()->json($post);
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+
+        if ($post->user_id !== auth()->id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // Delete associated media files
+        if ($post->image_url) {
+            Storage::disk('public')->delete($post->image_url);
+        }
+
+        if ($post->video_url) {
+            Storage::disk('public')->delete($post->video_url);
+        }
+
+        $post->delete();
+
+        return response()->json(['message' => 'Post deleted successfully']);
+    }
+}
