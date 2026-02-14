@@ -50,3 +50,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/posts/{postId}/shares', [ShareController::class, 'index']);
 });
 
+// Friend request routes
+Route::middleware('auth:sanctum')->prefix('friendships')->group(function () {
+    Route::get('/', [\App\Http\Controllers\FriendshipController::class, 'index']);
+    Route::post('/send', [\App\Http\Controllers\FriendshipController::class, 'send']);
+    Route::post('/accept', [\App\Http\Controllers\FriendshipController::class, 'accept']);
+    Route::post('/reject', [\App\Http\Controllers\FriendshipController::class, 'reject']);
+});
+
+// Follower routes
+Route::middleware('auth:sanctum')->prefix('followers')->group(function () {
+    Route::get('/', [\App\Http\Controllers\FollowerController::class, 'index']);
+    Route::post('/follow', [\App\Http\Controllers\FollowerController::class, 'follow']);
+    Route::post('/unfollow', [\App\Http\Controllers\FollowerController::class, 'unfollow']);
+});
+
+// User search routes
+Route::middleware('auth:sanctum')->get('/users/search', [\App\Http\Controllers\UserSearchController::class, 'search']);
+
