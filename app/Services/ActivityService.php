@@ -54,16 +54,16 @@ class ActivityService
     protected function getFriendIds(int $userId): Collection
     {
         $friends = Friendship::where(function ($query) use ($userId) {
-            $query->where('user_id', $userId)
-                ->orWhere('friend_id', $userId);
+            $query->where('requester_id', $userId)
+                ->orWhere('addressee_id', $userId);
         })
         ->where('status', 'accepted')
         ->get();
 
         return $friends->map(function ($friendship) use ($userId) {
-            return $friendship->user_id === $userId 
-                ? $friendship->friend_id 
-                : $friendship->user_id;
+            return $friendship->requester_id === $userId 
+                ? $friendship->addressee_id 
+                : $friendship->requester_id;
         });
     }
 
