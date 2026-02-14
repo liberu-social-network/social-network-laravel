@@ -66,7 +66,7 @@ class LikeTest extends TestCase
         $response->assertJsonCount(3, 'data');
     }
 
-    public function test_user_cannot_like_same_post_twice(): void
+    public function test_toggling_like_twice_results_in_no_like(): void
     {
         $user = User::factory()->create();
         $post = Post::factory()->create();

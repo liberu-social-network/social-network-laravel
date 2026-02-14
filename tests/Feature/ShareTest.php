@@ -66,7 +66,7 @@ class ShareTest extends TestCase
         $response->assertJsonCount(3, 'data');
     }
 
-    public function test_user_cannot_share_same_post_twice(): void
+    public function test_toggling_share_twice_results_in_no_share(): void
     {
         $user = User::factory()->create();
         $post = Post::factory()->create();
