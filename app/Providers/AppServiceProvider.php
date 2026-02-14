@@ -2,8 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
+use App\Models\Like;
+use App\Models\Post;
 use App\Modules\ModuleManager;
 use App\Modules\ModuleServiceProvider;
+use App\Observers\CommentObserver;
+use App\Observers\LikeObserver;
+use App\Observers\PostObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register model observers for activity tracking
+        Post::observe(PostObserver::class);
+        Like::observe(LikeObserver::class);
+        Comment::observe(CommentObserver::class);
     }
 }

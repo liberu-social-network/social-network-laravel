@@ -17,6 +17,10 @@ use Laravel\Jetstream\Http\Controllers\TeamInvitationController;
 
 Route::get('/', fn () => view('welcome'));
 
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/activity-feed', fn () => view('activity-feed'))->name('activity-feed');
+});
+
 // Route::redirect('/login', '/app/login')->name('login');
 
 // Route::redirect('/register', '/app/register')->name('register');
