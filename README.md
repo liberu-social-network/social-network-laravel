@@ -71,8 +71,42 @@ Notes:
 - The provided `setup.sh` automates install and seeding; it may overwrite `.env` if you consent.
 - Ensure `.env` DB settings are correct before running migrations.
 
+## API Documentation
+
+The friend request and follower system includes a comprehensive RESTful API. See the [API documentation](docs/FRIEND_FOLLOWER_API.md) for details on:
+
+- Friend request endpoints (send, accept, reject)
+- Follower endpoints (follow, unfollow)
+- User search endpoint
+- Authentication and error handling
+
 ## Features
 
+- **Authentication** (Jetstream with Socialstream)
+- **User Profiles** with avatars and bios
+- **Friend Request System**
+  - Send, accept, and reject friend requests
+  - View friends list and pending requests
+  - Friend count displayed on profiles
+- **Follower System**
+  - Follow and unfollow other users
+  - View followers and following lists
+  - Follower/following counts on profiles
+- **User Search**
+  - Search users by name or email
+  - Quick actions to add friends or follow users
+- **Private Messaging**
+- **Real-time Notifications**
+- **Admin Panel** (Filament)
+  - Manage friend requests and followers
+  - User statistics widget
+  - Comprehensive resource management
+- **RESTful API**
+  - Complete API for friend requests
+  - Follower management endpoints
+  - User search API
+  - Full API documentation available
+- **Modular Architecture** for easy extensions
 - Authentication (Jetstream)
 - Profiles with avatars and bios
 - Private messaging
