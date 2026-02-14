@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Share;
 use App\Models\Post;
+use App\Events\PostShared;
+use App\Events\PostUnshared;
 use Illuminate\Http\Request;
 
 class ShareController extends Controller
@@ -24,17 +26,23 @@ class ShareController extends Controller
         if ($share) {
             $share->delete();
             $shared = false;
+            $sharesCount = $post->shares()->count();
+            
+            event(new PostUnshared($post, auth()->user(), $sharesCount));
         } else {
             Share::create([
                 'post_id' => $post->id,
                 'user_id' => auth()->id(),
             ]);
             $shared = true;
+            $sharesCount = $post->shares()->count();
+            
+            event(new PostShared($post, auth()->user(), $sharesCount));
         }
 
         return response()->json([
             'shared' => $shared,
-            'shares_count' => $post->shares()->count(),
+            'shares_count' => $sharesCount,
         ]);
     }
 

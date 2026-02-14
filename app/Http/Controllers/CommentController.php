@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Events\CommentCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,6 +44,9 @@ class CommentController extends Controller
         ]);
 
         $comment->load('user');
+        
+        $commentsCount = $post->comments()->count();
+        event(new CommentCreated($comment, $commentsCount));
 
         return response()->json($comment, 201);
     }

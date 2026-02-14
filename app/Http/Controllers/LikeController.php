@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Like;
 use App\Models\Post;
+use App\Events\PostLiked;
+use App\Events\PostUnliked;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
@@ -24,17 +26,23 @@ class LikeController extends Controller
         if ($like) {
             $like->delete();
             $liked = false;
+            $likesCount = $post->likes()->count();
+            
+            event(new PostUnliked($post, auth()->user(), $likesCount));
         } else {
             Like::create([
                 'post_id' => $post->id,
                 'user_id' => auth()->id(),
             ]);
             $liked = true;
+            $likesCount = $post->likes()->count();
+            
+            event(new PostLiked($post, auth()->user(), $likesCount));
         }
 
         return response()->json([
             'liked' => $liked,
-            'likes_count' => $post->likes()->count(),
+            'likes_count' => $likesCount,
         ]);
     }
 
