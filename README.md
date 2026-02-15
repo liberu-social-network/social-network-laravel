@@ -71,6 +71,16 @@ Notes:
 - The provided `setup.sh` automates install and seeding; it may overwrite `.env` if you consent.
 - Ensure `.env` DB settings are correct before running migrations.
 
+## Database Schema
+
+For detailed information about the database structure, see the [Database Schema Documentation](docs/DATABASE_SCHEMA.md) which includes:
+
+- Complete table definitions with field descriptions
+- Entity relationship diagrams
+- Migration instructions
+- Seeding guidelines
+- Best practices and design decisions
+
 ## API Documentation
 
 The friend request and follower system includes a comprehensive RESTful API. See the [API documentation](docs/FRIEND_FOLLOWER_API.md) for details on:
