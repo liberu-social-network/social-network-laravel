@@ -66,8 +66,5 @@ class Post extends Model
     public function isSharedBy($user)
     {
         return $this->shares()->where('user_id', $user->id)->exists();
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
     }
 }
