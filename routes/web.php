@@ -20,6 +20,11 @@ Route::get('/', fn () => view('welcome'));
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/activity-feed', [App\Http\Controllers\ActivityFeedController::class, 'index'])->name('activity-feed');
     Route::get('/api/activities', [App\Http\Controllers\ActivityFeedController::class, 'getActivities'])->name('api.activities');
+    
+    // User Profile Routes
+    Route::get('/my-profile', fn () => view('user-profile.show'))->name('user-profile.show');
+    Route::get('/my-profile/edit', fn () => view('profile.edit'))->name('user-profile.edit');
+    Route::get('/users/{userId}/profile', fn ($userId) => view('user-profile.show', ['userId' => $userId]))->name('user-profile.view');
 });
 
 // Route::redirect('/login', '/app/login')->name('login');
