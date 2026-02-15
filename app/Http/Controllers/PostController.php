@@ -14,9 +14,10 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with(['user', 'comments.user', 'likes', 'shares'])
+        $posts = Post::with(['user', 'comments.user', 'likes', 'shares', 'media'])
+            ->visibleTo($request->user())
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
@@ -29,6 +30,7 @@ class PostController extends Controller
             'content' => 'required_without_all:image,video|string|max:5000',
             'image' => 'nullable|image|max:10240', // 10MB max
             'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:51200', // 50MB max
+            'privacy' => 'nullable|in:public,friends_only,private',
         ]);
 
         if ($validator->fails()) {
@@ -55,17 +57,23 @@ class PostController extends Controller
             'image_url' => $imageUrl,
             'video_url' => $videoUrl,
             'media_type' => $mediaType,
+            'privacy' => $request->input('privacy', 'public'),
         ]);
 
-        $post->load(['user', 'comments.user', 'likes', 'shares']);
+        $post->load(['user', 'comments.user', 'likes', 'shares', 'media']);
 
         return response()->json($post, 201);
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $post = Post::with(['user', 'comments.user', 'likes.user', 'shares.user'])
+        $post = Post::with(['user', 'comments.user', 'likes.user', 'shares.user', 'media'])
             ->findOrFail($id);
+
+        // Check if user can view this post
+        if (!$post->isVisibleTo($request->user())) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         return response()->json($post);
     }
@@ -79,18 +87,17 @@ class PostController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'content' => 'required|string|max:5000',
+            'content' => 'sometimes|string|max:5000',
+            'privacy' => 'sometimes|in:public,friends_only,private',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $post->update([
-            'content' => $request->content,
-        ]);
+        $post->update($request->only(['content', 'privacy']));
 
-        $post->load(['user', 'comments.user', 'likes', 'shares']);
+        $post->load(['user', 'comments.user', 'likes', 'shares', 'media']);
 
         return response()->json($post);
     }

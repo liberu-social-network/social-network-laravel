@@ -41,9 +41,11 @@ class FeedController extends Controller
         // Merge friend IDs, following IDs, and own user ID
         $userIds = array_unique(array_merge($friendIds, $followingIds, [$user->id]));
 
+        // Get posts from friends and self, respecting privacy settings
         // Get posts from friends, followed users, and self
         $posts = Post::whereIn('user_id', $userIds)
-            ->with(['user', 'comments.user', 'likes', 'shares'])
+            ->visibleTo($user)
+            ->with(['user', 'comments.user', 'likes', 'shares', 'media'])
             ->withCount(['likes', 'comments', 'shares'])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
@@ -62,7 +64,8 @@ class FeedController extends Controller
     {
         // Get a specific user's timeline
         $posts = Post::where('user_id', $userId)
-            ->with(['user', 'comments.user', 'likes', 'shares'])
+            ->visibleTo($request->user())
+            ->with(['user', 'comments.user', 'likes', 'shares', 'media'])
             ->withCount(['likes', 'comments', 'shares'])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
