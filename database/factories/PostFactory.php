@@ -18,6 +18,7 @@ class PostFactory extends Factory
             'image_url' => null,
             'video_url' => null,
             'media_type' => 'text',
+            'privacy' => 'public',
         ];
     }
 
