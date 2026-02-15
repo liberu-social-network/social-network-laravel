@@ -95,6 +95,11 @@ Route::middleware('auth:sanctum')->get('/users/search', [\App\Http\Controllers\U
 
 // Group routes
 Route::middleware('auth:sanctum')->prefix('groups')->group(function () {
+    // Group search and discovery (must be before /{id} routes)
+    Route::get('/search/query', [\App\Http\Controllers\GroupSearchController::class, 'search']);
+    Route::get('/search/suggestions', [\App\Http\Controllers\GroupSearchController::class, 'suggestions']);
+    Route::get('/search/popular', [\App\Http\Controllers\GroupSearchController::class, 'popular']);
+    
     // Group CRUD
     Route::get('/', [\App\Http\Controllers\GroupController::class, 'index']);
     Route::post('/', [\App\Http\Controllers\GroupController::class, 'store']);
@@ -119,9 +124,4 @@ Route::middleware('auth:sanctum')->prefix('groups')->group(function () {
     Route::post('/{groupId}/posts', [\App\Http\Controllers\GroupPostController::class, 'store']);
     Route::put('/{groupId}/posts/{postId}', [\App\Http\Controllers\GroupPostController::class, 'update']);
     Route::delete('/{groupId}/posts/{postId}', [\App\Http\Controllers\GroupPostController::class, 'destroy']);
-    
-    // Group search and discovery
-    Route::get('/search/query', [\App\Http\Controllers\GroupSearchController::class, 'search']);
-    Route::get('/search/suggestions', [\App\Http\Controllers\GroupSearchController::class, 'suggestions']);
-    Route::get('/search/popular', [\App\Http\Controllers\GroupSearchController::class, 'popular']);
 });
