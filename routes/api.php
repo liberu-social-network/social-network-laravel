@@ -48,7 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/conversations/{conversation}/messages', [MessageController::class, 'conversationMessages']);
     Route::post('/conversations/{conversation}/participants', [ConversationController::class, 'addParticipants']);
     Route::delete('/conversations/{conversation}/participants/{user}', [ConversationController::class, 'removeParticipant']);
-});
 
     // Feed routes
     Route::get('/feed', [FeedController::class, 'index']);
