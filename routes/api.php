@@ -9,6 +9,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventAttendeeController;
+use App\Http\Controllers\EventCalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,4 +95,29 @@ Route::middleware('auth:sanctum')->prefix('followers')->group(function () {
 
 // User search routes
 Route::middleware('auth:sanctum')->get('/users/search', [\App\Http\Controllers\UserSearchController::class, 'search']);
+
+// Event routes
+Route::middleware('auth:sanctum')->prefix('events')->group(function () {
+    Route::get('/', [EventController::class, 'index']);
+    Route::post('/', [EventController::class, 'store']);
+    Route::get('/discover', [EventController::class, 'discover']);
+    Route::get('/my-events', [EventController::class, 'myEvents']);
+    Route::get('/attending', [EventController::class, 'attending']);
+    Route::get('/{id}', [EventController::class, 'show']);
+    Route::put('/{id}', [EventController::class, 'update']);
+    Route::delete('/{id}', [EventController::class, 'destroy']);
+    
+    // RSVP routes
+    Route::post('/{eventId}/rsvp', [EventAttendeeController::class, 'rsvp']);
+    Route::put('/{eventId}/rsvp', [EventAttendeeController::class, 'updateRsvp']);
+    Route::delete('/{eventId}/rsvp', [EventAttendeeController::class, 'cancelRsvp']);
+    Route::get('/{eventId}/rsvp/me', [EventAttendeeController::class, 'getMyRsvp']);
+    Route::get('/{eventId}/attendees', [EventAttendeeController::class, 'getAttendees']);
+    
+    // Calendar export routes
+    Route::get('/{eventId}/export', [EventCalendarController::class, 'exportEvent']);
+});
+
+// Calendar export for all user events
+Route::middleware('auth:sanctum')->get('/calendar/export', [EventCalendarController::class, 'exportMyEvents']);
 
