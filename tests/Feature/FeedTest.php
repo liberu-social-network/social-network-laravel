@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Friendship;
+use App\Models\Follower;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,8 +32,8 @@ class FeedTest extends TestCase
         
         // Create friendship
         Friendship::factory()->create([
-            'user_id' => $user->id,
-            'friend_id' => $friend->id,
+            'requester_id' => $user->id,
+            'addressee_id' => $friend->id,
             'status' => 'accepted',
         ]);
 
@@ -44,6 +45,27 @@ class FeedTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonCount(5, 'data'); // 2 own + 3 friend
+    }
+
+    public function test_feed_includes_followed_users_posts(): void
+    {
+        $user = User::factory()->create();
+        $followedUser = User::factory()->create();
+        
+        // Create follower relationship
+        Follower::factory()->create([
+            'follower_id' => $user->id,
+            'following_id' => $followedUser->id,
+        ]);
+
+        Post::factory(2)->create(['user_id' => $user->id]);
+        Post::factory(4)->create(['user_id' => $followedUser->id]);
+        Post::factory(3)->create(); // Other users' posts
+
+        $response = $this->actingAs($user)->getJson('/api/feed');
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(6, 'data'); // 2 own + 4 followed
     }
 
     public function test_user_can_view_timeline_of_another_user(): void
