@@ -36,13 +36,13 @@ This implementation adds comprehensive user profile management functionality to 
 ## Technical Implementation
 
 ### Database Changes
-1. **Migration**: `2026_02_15_220000_add_bio_to_profiles_table.php`
-   - Adds `bio` column to `profiles` table
-   - Note: `bio` was also added to `users` table in a previous migration
+1. **Existing Migration**: `2026_02_15_210000_add_bio_to_users_table.php`
+   - Adds `bio` column to `users` table (already exists)
+   - Bio is stored in the users table, not the profiles table
 
 2. **Models Updated**:
    - `User.php`: Added `bio` to fillable array, added `profile()` relationship
-   - `Profile.php`: Added `bio` to fillable array
+   - `Profile.php`: No changes needed (bio not stored here)
 
 ### Livewire Components
 1. **ShowProfile** (`app/Http/Livewire/ShowProfile.php`)
@@ -227,18 +227,19 @@ Potential improvements for future iterations:
 - `resources/views/livewire/edit-profile.blade.php`
 - `resources/views/user-profile/show.blade.php`
 - `resources/views/profile/edit.blade.php`
-- `database/migrations/2026_02_15_220000_add_bio_to_profiles_table.php`
 - `tests/Feature/ProfileTest.php`
+- `PROFILE_IMPLEMENTATION.md` (this file)
 
 ### Modified Files
 - `app/Models/User.php` (added bio to fillable, added profile relationship)
-- `app/Models/Profile.php` (added bio to fillable)
 - `routes/web.php` (added profile routes)
 
 ## Notes
 
 1. The implementation uses Laravel Jetstream's existing profile photo functionality
-2. Bio field exists in both `users` and `profiles` tables - using `users.bio` as primary
+2. Bio field is stored in the `users` table (added by migration `2026_02_15_210000_add_bio_to_users_table.php`)
 3. Profile is automatically created when first accessed if it doesn't exist
 4. All routes are protected by authentication middleware
 5. The implementation follows Laravel and Livewire best practices
+6. Code review completed with all issues addressed
+7. Security scan passed with no vulnerabilities detected
