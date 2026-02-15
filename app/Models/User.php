@@ -322,4 +322,20 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     {
         return $this->privacySettings()->firstOrCreate(['user_id' => $this->id]);
     }
+
+    /**
+     * Get the user's media.
+     */
+    public function media()
+    {
+        return $this->hasMany(Media::class);
+    }
+
+    /**
+     * Get the user's albums.
+     */
+    public function albums()
+    {
+        return $this->hasMany(Album::class);
+    }
 }

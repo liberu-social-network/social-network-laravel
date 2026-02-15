@@ -5,88 +5,82 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Media extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'content',
-        'image_url',
-        'video_url',
-        'media_type',
+        'post_id',
+        'album_id',
+        'file_path',
+        'file_name',
+        'file_type',
+        'mime_type',
+        'file_size',
+        'thumbnail_path',
+        'description',
         'privacy',
+        'width',
+        'height',
+        'duration',
     ];
 
+    protected $casts = [
+        'file_size' => 'integer',
+        'width' => 'integer',
+        'height' => 'integer',
+        'duration' => 'integer',
+    ];
+
+    /**
+     * Get the user that owns the media.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
-    }
-
-    public function likes()
-    {
-        return $this->hasMany(Like::class);
-    }
-
-    public function shares()
-    {
-        return $this->hasMany(Share::class);
-    }
-
-    public function likesCount()
-    {
-        return $this->likes()->count();
-    }
-
-    public function commentsCount()
-    {
-        return $this->comments()->count();
-    }
-
-    public function sharesCount()
-    {
-        return $this->shares()->count();
-    }
-
-    public function isLikedBy($user)
-    {
-        return $this->likes()->where('user_id', $user->id)->exists();
-    }
-
-    public function isSharedBy($user)
-    {
-        return $this->shares()->where('user_id', $user->id)->exists();
-    }
-
     /**
-     * Get the media attached to the post.
+     * Get the post this media belongs to.
      */
-    public function media()
+    public function post()
     {
-        return $this->hasMany(Media::class);
+        return $this->belongsTo(Post::class);
     }
 
     /**
-     * Check if post is visible to the given user.
+     * Get the album this media belongs to.
+     */
+    public function album()
+    {
+        return $this->belongsTo(Album::class);
+    }
+
+    /**
+     * Get the tags for the media.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'media_tag');
+    }
+
+    /**
+     * Check if media is visible to the given user.
      */
     public function isVisibleTo(?User $viewer): bool
     {
-        // Public posts are visible to everyone
+        // Public media is visible to everyone
         if ($this->privacy === 'public') {
             return true;
         }
 
-        // Private posts are only visible to the owner
+        // Private media is only visible to the owner
         if ($this->privacy === 'private') {
             return $viewer && $viewer->id === $this->user_id;
         }
 
-        // Friends-only posts are visible to friends and the owner
+        // Friends-only media is visible to friends and the owner
         if ($this->privacy === 'friends_only') {
             if (!$viewer) {
                 return false;
@@ -103,7 +97,7 @@ class Post extends Model
     }
 
     /**
-     * Scope to filter posts visible to a user.
+     * Scope to filter media visible to a user.
      */
     public function scopeVisibleTo($query, ?User $viewer)
     {
@@ -134,5 +128,21 @@ class Post extends Model
                         });
                 });
         });
+    }
+
+    /**
+     * Get the full URL for the media file.
+     */
+    public function getUrlAttribute(): string
+    {
+        return asset('storage/' . $this->file_path);
+    }
+
+    /**
+     * Get the full URL for the thumbnail.
+     */
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        return $this->thumbnail_path ? asset('storage/' . $this->thumbnail_path) : null;
     }
 }

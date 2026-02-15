@@ -5,66 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Album extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'content',
-        'image_url',
-        'video_url',
-        'media_type',
+        'name',
+        'description',
+        'cover_image',
         'privacy',
     ];
 
+    /**
+     * Get the user that owns the album.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
-    }
-
-    public function likes()
-    {
-        return $this->hasMany(Like::class);
-    }
-
-    public function shares()
-    {
-        return $this->hasMany(Share::class);
-    }
-
-    public function likesCount()
-    {
-        return $this->likes()->count();
-    }
-
-    public function commentsCount()
-    {
-        return $this->comments()->count();
-    }
-
-    public function sharesCount()
-    {
-        return $this->shares()->count();
-    }
-
-    public function isLikedBy($user)
-    {
-        return $this->likes()->where('user_id', $user->id)->exists();
-    }
-
-    public function isSharedBy($user)
-    {
-        return $this->shares()->where('user_id', $user->id)->exists();
-    }
-
     /**
-     * Get the media attached to the post.
+     * Get the media in the album.
      */
     public function media()
     {
@@ -72,21 +34,21 @@ class Post extends Model
     }
 
     /**
-     * Check if post is visible to the given user.
+     * Check if album is visible to the given user.
      */
     public function isVisibleTo(?User $viewer): bool
     {
-        // Public posts are visible to everyone
+        // Public albums are visible to everyone
         if ($this->privacy === 'public') {
             return true;
         }
 
-        // Private posts are only visible to the owner
+        // Private albums are only visible to the owner
         if ($this->privacy === 'private') {
             return $viewer && $viewer->id === $this->user_id;
         }
 
-        // Friends-only posts are visible to friends and the owner
+        // Friends-only albums are visible to friends and the owner
         if ($this->privacy === 'friends_only') {
             if (!$viewer) {
                 return false;
@@ -103,7 +65,7 @@ class Post extends Model
     }
 
     /**
-     * Scope to filter posts visible to a user.
+     * Scope to filter albums visible to a user.
      */
     public function scopeVisibleTo($query, ?User $viewer)
     {
@@ -134,5 +96,27 @@ class Post extends Model
                         });
                 });
         });
+    }
+
+    /**
+     * Get the media count in the album.
+     */
+    public function getMediaCountAttribute(): int
+    {
+        return $this->media()->count();
+    }
+
+    /**
+     * Get the cover image URL.
+     */
+    public function getCoverImageUrlAttribute(): ?string
+    {
+        if ($this->cover_image) {
+            return asset('storage/' . $this->cover_image);
+        }
+
+        // Use the first media item's thumbnail as cover if available
+        $firstMedia = $this->media()->first();
+        return $firstMedia ? $firstMedia->thumbnail_url : null;
     }
 }
