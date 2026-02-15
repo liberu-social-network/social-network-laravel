@@ -35,9 +35,10 @@ class FeedController extends Controller
         // Include own user ID to show own posts
         $userIds = array_merge($friendIds, [$user->id]);
 
-        // Get posts from friends and self
+        // Get posts from friends and self, respecting privacy settings
         $posts = Post::whereIn('user_id', $userIds)
-            ->with(['user', 'comments.user', 'likes', 'shares'])
+            ->visibleTo($user)
+            ->with(['user', 'comments.user', 'likes', 'shares', 'media'])
             ->withCount(['likes', 'comments', 'shares'])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
@@ -56,7 +57,8 @@ class FeedController extends Controller
     {
         // Get a specific user's timeline
         $posts = Post::where('user_id', $userId)
-            ->with(['user', 'comments.user', 'likes', 'shares'])
+            ->visibleTo($request->user())
+            ->with(['user', 'comments.user', 'likes', 'shares', 'media'])
             ->withCount(['likes', 'comments', 'shares'])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
