@@ -315,6 +315,35 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     public function getFollowingCountAttribute()
     {
         return $this->following()->count();
+    }
+
+    // Group relationships
+    public function ownedGroups()
+    {
+        return $this->hasMany(Group::class);
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_members')
+            ->withPivot('role', 'status')
+            ->withTimestamps()
+            ->wherePivot('status', 'approved');
+    }
+
+    public function isMemberOf(Group $group): bool
+    {
+        return $this->groups()->where('group_id', $group->id)->exists();
+    }
+
+    public function isAdminOf(Group $group): bool
+    {
+        return $this->groups()
+            ->where('group_id', $group->id)
+            ->wherePivot('role', 'admin')
+            ->exists();
+    }
+
     /**
      * Get or create privacy settings for the user.
      */
