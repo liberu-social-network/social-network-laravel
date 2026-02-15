@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Friendship;
+use App\Models\Follower;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,24 +19,29 @@ class FeedController extends Controller
     {
         $user = auth()->user();
 
-        // Get IDs of friends and users being followed
+        // Get IDs of friends (accepted friendships)
         $friendIds = Friendship::where(function($query) use ($user) {
-                $query->where('user_id', $user->id)
-                      ->orWhere('friend_id', $user->id);
+                $query->where('requester_id', $user->id)
+                      ->orWhere('addressee_id', $user->id);
             })
             ->where('status', 'accepted')
             ->get()
             ->map(function($friendship) use ($user) {
-                return $friendship->user_id === $user->id 
-                    ? $friendship->friend_id 
-                    : $friendship->user_id;
+                return $friendship->requester_id === $user->id 
+                    ? $friendship->addressee_id 
+                    : $friendship->requester_id;
             })
             ->toArray();
 
-        // Include own user ID to show own posts
-        $userIds = array_merge($friendIds, [$user->id]);
+        // Get IDs of users being followed
+        $followingIds = Follower::where('follower_id', $user->id)
+            ->pluck('following_id')
+            ->toArray();
 
-        // Get posts from friends and self
+        // Merge friend IDs, following IDs, and own user ID
+        $userIds = array_unique(array_merge($friendIds, $followingIds, [$user->id]));
+
+        // Get posts from friends, followed users, and self
         $posts = Post::whereIn('user_id', $userIds)
             ->with(['user', 'comments.user', 'likes', 'shares'])
             ->withCount(['likes', 'comments', 'shares'])
