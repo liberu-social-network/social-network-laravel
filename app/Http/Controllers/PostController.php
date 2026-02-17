@@ -17,6 +17,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $posts = Post::with(['user', 'comments.user', 'likes', 'shares', 'media'])
+            ->published()
             ->visibleTo($request->user())
             ->orderBy('created_at', 'desc')
             ->paginate(20);
@@ -31,6 +32,7 @@ class PostController extends Controller
             'image' => 'nullable|image|max:10240', // 10MB max
             'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:51200', // 50MB max
             'privacy' => 'nullable|in:public,friends_only,private',
+            'scheduled_at' => 'nullable|date|after:now',
         ]);
 
         if ($validator->fails()) {
@@ -51,6 +53,14 @@ class PostController extends Controller
             $mediaType = $request->hasFile('image') ? 'mixed' : 'video';
         }
 
+        $scheduledAt = $request->input('scheduled_at');
+        $isPublished = true;
+
+        // If scheduled for future, mark as unpublished
+        if ($scheduledAt && \Carbon\Carbon::parse($scheduledAt)->isFuture()) {
+            $isPublished = false;
+        }
+
         $post = Post::create([
             'user_id' => auth()->id(),
             'content' => $request->content,
@@ -58,11 +68,19 @@ class PostController extends Controller
             'video_url' => $videoUrl,
             'media_type' => $mediaType,
             'privacy' => $request->input('privacy', 'public'),
+            'scheduled_at' => $scheduledAt,
+            'is_published' => $isPublished,
         ]);
 
         $post->load(['user', 'comments.user', 'likes', 'shares', 'media']);
 
-        return response()->json($post, 201);
+        $response = ['post' => $post];
+        
+        if (!$isPublished) {
+            $response['message'] = 'Post scheduled successfully for ' . \Carbon\Carbon::parse($scheduledAt)->format('Y-m-d H:i:s');
+        }
+
+        return response()->json($response, 201);
     }
 
     public function show(Request $request, $id)
@@ -73,6 +91,11 @@ class PostController extends Controller
         // Check if user can view this post
         if (!$post->isVisibleTo($request->user())) {
             return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Don't show unpublished posts to others
+        if (!$post->is_published && $post->user_id !== $request->user()->id) {
+            return response()->json(['message' => 'Post not found'], 404);
         }
 
         return response()->json($post);
