@@ -19,6 +19,7 @@ class PostFactory extends Factory
             'video_url' => null,
             'media_type' => 'text',
             'privacy' => 'public',
+            'moderation_status' => 'approved',
         ];
     }
 

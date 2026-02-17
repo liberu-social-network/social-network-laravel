@@ -17,6 +17,7 @@ class CommentFactory extends Factory
             'user_id' => User::factory(),
             'post_id' => Post::factory(),
             'content' => $this->faker->sentence(),
+            'moderation_status' => 'approved',
         ];
     }
 }
