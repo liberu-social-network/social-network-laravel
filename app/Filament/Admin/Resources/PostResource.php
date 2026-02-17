@@ -15,9 +15,9 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static string | \UnitEnum | null $navigationGroup = 'Content';
 
     public static function form(Form $form): Form
     {
@@ -32,6 +32,23 @@ class PostResource extends Resource
                     ->required()
                     ->maxLength(5000)
                     ->columnSpanFull(),
+                Forms\Components\Select::make('privacy')
+                    ->options([
+                        'public' => 'Public',
+                        'friends_only' => 'Friends Only',
+                        'private' => 'Private',
+                    ])
+                    ->default('public')
+                    ->required(),
+                Forms\Components\DateTimePicker::make('scheduled_at')
+                    ->label('Schedule for')
+                    ->helperText('Leave empty to publish immediately')
+                    ->minDate(now())
+                    ->seconds(false),
+                Forms\Components\Toggle::make('is_published')
+                    ->label('Published')
+                    ->default(true)
+                    ->helperText('Uncheck to keep as draft or scheduled'),
                 Forms\Components\FileUpload::make('image_url')
                     ->image()
                     ->directory('posts/images')
@@ -72,6 +89,14 @@ class PostResource extends Resource
                         'video' => 'warning',
                         'mixed' => 'info',
                     }),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->boolean()
+                    ->label('Published'),
+                Tables\Columns\TextColumn::make('scheduled_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Scheduled For')
+                    ->placeholder('—'),
                 Tables\Columns\TextColumn::make('likes_count')
                     ->counts('likes')
                     ->label('Likes'),
@@ -87,6 +112,12 @@ class PostResource extends Resource
                     ->toggleable(),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('is_published')
+                    ->label('Publication Status')
+                    ->options([
+                        '1' => 'Published',
+                        '0' => 'Scheduled/Draft',
+                    ]),
                 Tables\Filters\SelectFilter::make('media_type')
                     ->options([
                         'text' => 'Text',

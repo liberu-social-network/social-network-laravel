@@ -17,6 +17,13 @@ class Post extends Model
         'video_url',
         'media_type',
         'privacy',
+        'scheduled_at',
+        'is_published',
+    ];
+
+    protected $casts = [
+        'scheduled_at' => 'datetime',
+        'is_published' => 'boolean',
     ];
 
     public function user()
@@ -140,5 +147,31 @@ class Post extends Model
                         });
                 });
         });
+    }
+
+    /**
+     * Scope to filter published posts only.
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    /**
+     * Scope to filter scheduled posts that should be published.
+     */
+    public function scopeScheduledForPublishing($query)
+    {
+        return $query->where('is_published', false)
+            ->whereNotNull('scheduled_at')
+            ->where('scheduled_at', '<=', now());
+    }
+
+    /**
+     * Check if post is scheduled for future publishing.
+     */
+    public function isScheduled(): bool
+    {
+        return !$this->is_published && $this->scheduled_at && $this->scheduled_at->isFuture();
     }
 }

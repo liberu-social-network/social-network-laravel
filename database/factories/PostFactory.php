@@ -19,7 +19,25 @@ class PostFactory extends Factory
             'video_url' => null,
             'media_type' => 'text',
             'privacy' => 'public',
+            'is_published' => true,
+            'scheduled_at' => null,
         ];
+    }
+
+    public function scheduled($minutes = 60): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'scheduled_at' => now()->addMinutes($minutes),
+            'is_published' => false,
+        ]);
+    }
+
+    public function scheduledForPublishing(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'scheduled_at' => now()->subMinutes(5),
+            'is_published' => false,
+        ]);
     }
 
     public function withImage(): static

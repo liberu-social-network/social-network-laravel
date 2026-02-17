@@ -14,9 +14,9 @@ class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-envelope';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static ?string $navigationGroup = 'Social';
+    protected static string | \UnitEnum | null $navigationGroup = 'Social';
 
     public static function form(Form $form): Form
     {

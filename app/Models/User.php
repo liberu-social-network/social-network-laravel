@@ -249,7 +249,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         })->where('status', 'pending')->exists();
     }
 
-    public function isFriendWith(User $user)
     public function privacySettings()
     {
         return $this->hasOne(UserPrivacySetting::class);
