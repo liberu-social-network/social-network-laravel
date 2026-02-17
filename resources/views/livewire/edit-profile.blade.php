@@ -1,7 +1,7 @@
-<div class="bg-white rounded-lg shadow-md p-6">
-    <div class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Edit Profile</h2>
-        <p class="text-gray-600 mt-1">Update your profile information and settings</p>
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+    <div class="mb-4 sm:mb-6">
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Edit Profile</h2>
+        <p class="text-sm sm:text-base text-gray-600 mt-1">Update your profile information and settings</p>
     </div>
 
     @if (session()->has('message'))
@@ -14,7 +14,7 @@
         {{-- Profile Photo --}}
         <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 mb-2">Profile Photo</label>
-            <div class="flex items-center space-x-4">
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <div class="flex-shrink-0">
                     @if ($profile_photo)
                         <img src="{{ $profile_photo->temporaryUrl() }}" 
@@ -32,7 +32,7 @@
                         Select New Photo
                     </label>
                     @if($currentPhotoUrl && !str_contains($currentPhotoUrl, 'ui-avatars.com'))
-                        <button type="button" wire:click="deleteProfilePhoto" class="ml-2 inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring focus:ring-red-300 disabled:opacity-25 transition">
+                        <button type="button" wire:click="deleteProfilePhoto" class="mt-2 sm:mt-0 sm:ml-2 inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring focus:ring-red-300 disabled:opacity-25 transition">
                             Remove Photo
                         </button>
                     @endif
@@ -99,11 +99,11 @@
         </div>
 
         {{-- Action Buttons --}}
-        <div class="flex items-center justify-end space-x-3 border-t border-gray-200 pt-4">
-            <a href="{{ route('user-profile.show') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-25 transition">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end space-y-2 sm:space-y-0 sm:space-x-3 border-t border-gray-200 pt-4">
+            <a href="{{ route('user-profile.show') }}" class="inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-25 transition">
                 Cancel
             </a>
-            <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition">
+            <button type="submit" class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition">
                 <span wire:loading.remove wire:target="save">Save Changes</span>
                 <span wire:loading wire:target="save">Saving...</span>
             </button>

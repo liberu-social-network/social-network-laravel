@@ -1,8 +1,8 @@
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
     {{-- Profile Header --}}
-    <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-32"></div>
+    <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-24 sm:h-32"></div>
     
-    <div class="px-6 pb-6">
+    <div class="px-4 sm:px-6 pb-6">
         <div class="flex flex-col sm:flex-row items-center sm:items-end -mt-16 mb-4">
             {{-- Profile Photo --}}
             <div class="flex-shrink-0 mb-4 sm:mb-0">
@@ -13,8 +13,8 @@
             
             {{-- User Info --}}
             <div class="sm:ml-6 text-center sm:text-left flex-1">
-                <h1 class="text-3xl font-bold text-gray-900">{{ $user->name }}</h1>
-                <p class="text-gray-600">{{ $user->email }}</p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ $user->name }}</h1>
+                <p class="text-sm sm:text-base text-gray-600">{{ $user->email }}</p>
             </div>
             
             {{-- Edit Button --}}
@@ -85,18 +85,18 @@
 
         {{-- Stats --}}
         <div class="mt-6 border-t border-gray-200 pt-6">
-            <div class="grid grid-cols-3 gap-4 text-center">
+            <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                 <div>
-                    <div class="text-2xl font-bold text-gray-900">{{ $user->friends_count }}</div>
-                    <div class="text-sm text-gray-600">Friends</div>
+                    <div class="text-xl sm:text-2xl font-bold text-gray-900">{{ $user->friends_count }}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">Friends</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-gray-900">{{ $user->followers_count }}</div>
-                    <div class="text-sm text-gray-600">Followers</div>
+                    <div class="text-xl sm:text-2xl font-bold text-gray-900">{{ $user->followers_count }}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">Followers</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-gray-900">{{ $user->following_count }}</div>
-                    <div class="text-sm text-gray-600">Following</div>
+                    <div class="text-xl sm:text-2xl font-bold text-gray-900">{{ $user->following_count }}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">Following</div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-white shadow-xl rounded-lg overflow-hidden">
-        <div class="grid grid-cols-1 md:grid-cols-3 h-[600px]">
+        <div class="grid grid-cols-1 md:grid-cols-3 h-[400px] sm:h-[500px] md:h-[600px]">
             <!-- Conversations List -->
             <div class="border-r border-gray-200 overflow-y-auto">
                 <div class="p-4 border-b border-gray-200">
@@ -67,7 +67,7 @@
                     <div class="flex-1 overflow-y-auto p-4 space-y-4">
                         @forelse($messages as $message)
                             <div class="flex {{ $message->sender_id == auth()->id() ? 'justify-end' : 'justify-start' }}">
-                                <div class="max-w-xs lg:max-w-md">
+                                <div class="max-w-xs sm:max-w-sm lg:max-w-md">
                                     <div class="px-4 py-2 rounded-lg {{ $message->sender_id == auth()->id() ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-900' }}">
                                         <p class="break-words">{{ $message->content }}</p>
                                     </div>

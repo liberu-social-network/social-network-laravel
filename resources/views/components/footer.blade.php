@@ -1,5 +1,5 @@
 <footer class="p-4 bg-white sm:p-6 dark:bg-gray-800">
-    <div class="mx-auto max-w-(--breakpoint-xl)">
+    <div class="mx-auto max-w-7xl">
         <div class="md:flex md:justify-between">
             <div class="mb-6 md:mb-0">
                 <a href="#" class="flex items-center">
@@ -10,7 +10,7 @@
                 </a>
                
             </div>
-            <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+            <div class="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <div></div>
                 <div></div>
                 <div>
