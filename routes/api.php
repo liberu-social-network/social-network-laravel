@@ -4,6 +4,7 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\ContentReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -147,4 +148,11 @@ Route::middleware('auth:sanctum')->prefix('groups')->group(function () {
     Route::post('/{groupId}/posts', [\App\Http\Controllers\GroupPostController::class, 'store']);
     Route::put('/{groupId}/posts/{postId}', [\App\Http\Controllers\GroupPostController::class, 'update']);
     Route::delete('/{groupId}/posts/{postId}', [\App\Http\Controllers\GroupPostController::class, 'destroy']);
+});
+
+// Content Report routes
+Route::middleware('auth:sanctum')->prefix('reports')->group(function () {
+    Route::get('/', [ContentReportController::class, 'index']);
+    Route::post('/', [ContentReportController::class, 'store']);
+    Route::delete('/{report}', [ContentReportController::class, 'destroy']);
 });

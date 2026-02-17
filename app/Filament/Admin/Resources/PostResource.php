@@ -81,12 +81,30 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('shares_count')
                     ->counts('shares')
                     ->label('Shares'),
+                Tables\Columns\TextColumn::make('moderation_status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'pending' => 'warning',
+                        'rejected' => 'danger',
+                        'flagged' => 'info',
+                        default => 'gray',
+                    })
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('moderation_status')
+                    ->options([
+                        'approved' => 'Approved',
+                        'pending' => 'Pending',
+                        'rejected' => 'Rejected',
+                        'flagged' => 'Flagged',
+                    ]),
                 Tables\Filters\SelectFilter::make('media_type')
                     ->options([
                         'text' => 'Text',
