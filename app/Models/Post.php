@@ -17,6 +17,14 @@ class Post extends Model
         'video_url',
         'media_type',
         'privacy',
+        'moderation_status',
+        'moderation_notes',
+        'moderated_by',
+        'moderated_at',
+    ];
+
+    protected $casts = [
+        'moderated_at' => 'datetime',
     ];
 
     public function user()
@@ -67,6 +75,30 @@ class Post extends Model
     public function isSharedBy($user)
     {
         return $this->shares()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Get the moderator who moderated this post.
+     */
+    public function moderator()
+    {
+        return $this->belongsTo(User::class, 'moderated_by');
+    }
+
+    /**
+     * Get all reports for this post.
+     */
+    public function reports()
+    {
+        return $this->morphMany(ContentReport::class, 'reportable');
+    }
+
+    /**
+     * Scope to filter only approved posts.
+     */
+    public function scopeApproved($query)
+    {
+        return $query->where('moderation_status', 'approved');
     }
 
     /**
