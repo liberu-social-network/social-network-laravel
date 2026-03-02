@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\FriendRequestAccepted;
+use App\Notifications\FriendRequestReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,6 +43,8 @@ class FriendshipController extends Controller
             ], 400);
         }
 
+        $targetUser->notify(new FriendRequestReceived($user));
+
         return response()->json([
             'message' => 'Friend request sent successfully.',
             'friendship' => $friendship,
@@ -63,6 +67,8 @@ class FriendshipController extends Controller
                 'message' => 'Unable to accept friend request.',
             ], 400);
         }
+
+        $requester->notify(new FriendRequestAccepted($user));
 
         return response()->json([
             'message' => 'Friend request accepted successfully.',
