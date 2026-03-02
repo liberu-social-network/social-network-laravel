@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\NewFollower;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,6 +42,8 @@ class FollowerController extends Controller
                 'message' => 'Unable to follow user.',
             ], 400);
         }
+
+        $targetUser->notify(new NewFollower($user));
 
         return response()->json([
             'message' => 'Successfully followed user.',
