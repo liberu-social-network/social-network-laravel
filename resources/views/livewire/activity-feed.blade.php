@@ -1,5 +1,5 @@
-<div class="bg-white rounded-lg shadow-md p-6" wire:poll.10s="loadActivities">
-    <h2 class="text-2xl font-bold mb-6 text-gray-800">Activity Feed</h2>
+<div class="bg-white rounded-lg shadow-md p-4 sm:p-6" wire:poll.10s="loadActivities">
+    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-800">Activity Feed</h2>
 
     @if($activities && $activities->count() > 0)
         <div class="space-y-4">
