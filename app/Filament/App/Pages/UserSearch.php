@@ -19,13 +19,13 @@ class UserSearch extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static ?string $navigationIcon = 'heroicon-o-magnifying-glass';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-magnifying-glass';
 
-    protected static string $view = 'filament.app.pages.user-search';
+    protected string $view = 'filament.app.pages.user-search';
 
     protected static ?string $navigationLabel = 'Search Users';
 
-    protected static ?string $navigationGroup = 'Social';
+    protected static string|\UnitEnum|null $navigationGroup = 'Social';
 
     public ?string $search = '';
 
