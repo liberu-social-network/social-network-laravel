@@ -4,7 +4,7 @@ namespace App\Filament\App\Resources;
 
 use App\Models\Friendship;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,15 +14,15 @@ class FriendshipResource extends Resource
 {
     protected static ?string $model = Friendship::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $navigationLabel = 'Friend Requests';
 
-    protected static ?string $navigationGroup = 'Social';
+    protected static string|\UnitEnum|null $navigationGroup = 'Social';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Select::make('requester_id')
                     ->relationship('requester', 'name')

@@ -4,7 +4,7 @@ namespace App\Filament\App\Resources;
 
 use App\Models\Follower;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,15 +14,15 @@ class FollowerResource extends Resource
 {
     protected static ?string $model = Follower::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationLabel = 'Followers';
 
-    protected static ?string $navigationGroup = 'Social';
+    protected static string|\UnitEnum|null $navigationGroup = 'Social';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Select::make('follower_id')
                     ->relationship('follower', 'name')

@@ -6,14 +6,14 @@ use App\Models\UserPrivacySetting;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 
 class PrivacySettings extends Page
 {
-    protected static string $view = 'filament.pages.privacy-settings';
+    protected string $view = 'filament.pages.privacy-settings';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-shield-check';
 
@@ -43,9 +43,9 @@ class PrivacySettings extends Page
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make('Profile Visibility')
                     ->description('Control who can view your profile and personal information')

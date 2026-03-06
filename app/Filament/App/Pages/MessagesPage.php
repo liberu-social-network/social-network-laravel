@@ -6,9 +6,9 @@ use Filament\Pages\Page;
 
 class MessagesPage extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-envelope';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static string $view = 'filament.app.pages.messages';
+    protected string $view = 'filament.app.pages.messages';
 
     protected static ?string $title = 'Messages';
 
