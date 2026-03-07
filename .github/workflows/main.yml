@@ -32,11 +32,7 @@ jobs:
       -
         name: Extract metadata (tags, labels) for Docker
         id: meta
-<<<<<<< HEAD
-        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e4288.5
-=======
         uses: docker/metadata-action@v5
->>>>>>> 42df2364d302d880d85a0df63e3c55bee4d04d47
         with:
           images: liberu/social-network
 
@@ -47,11 +43,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
-<<<<<<< HEAD
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198.562a7d2c83
-=======
         uses: docker/build-push-action@v6
->>>>>>> 42df2364d302d880d85a0df63e3c55bee4d04d47
         with:
           context: .
           file: Dockerfile
