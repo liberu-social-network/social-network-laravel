@@ -116,18 +116,17 @@ class MessageReactionTest extends TestCase
     public function test_multiple_users_can_react_to_same_message()
     {
         $sender = User::factory()->create();
-        $receiver1 = User::factory()->create();
-        $receiver2 = User::factory()->create();
+        $receiver = User::factory()->create();
 
         $message = Message::factory()->create([
             'sender_id' => $sender->id,
-            'receiver_id' => $receiver1->id,
+            'receiver_id' => $receiver->id,
         ]);
 
-        Sanctum::actingAs($receiver1);
+        Sanctum::actingAs($receiver);
         $this->postJson("/api/messages/{$message->id}/reactions", ['emoji' => '👍']);
 
-        Sanctum::actingAs($receiver2);
+        Sanctum::actingAs($sender);
         $this->postJson("/api/messages/{$message->id}/reactions", ['emoji' => '👍']);
 
         $message->refresh();
