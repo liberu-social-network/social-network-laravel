@@ -39,7 +39,7 @@ class CreateNewUser implements CreatesNewUsers
                     Rule::unique(User::class),
                 ],
                 'password' => $this->passwordRules(),
-                'role' => ['required', 'string', Rule::in(['tenant', 'buyer', 'seller', 'landlord', 'contractor'])],
+                'role' => ['nullable', 'string', Rule::in(['tenant', 'buyer', 'seller', 'landlord', 'contractor'])],
             ])->validate();
 
            
@@ -52,23 +52,23 @@ class CreateNewUser implements CreatesNewUsers
                     $team = $this->assignOrCreateTeam($user);
                     $user->switchTeam($team);
                     setPermissionsTeamId($team->id);
-                    $user->assignRole($input['role']);
+                    $role = $input['role'] ?? 'tenant';
+                    try {
+                        $user->assignRole($role);
+                    } catch (\Exception $e) {
+                        Log::warning('Could not assign role to user', [
+                            'user_id' => $user->id,
+                            'role' => $role,
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
                 });
             });
-            // $user = DB::transaction(function () use ($input) {
-            //     return tap(,
-            //     , function (User $user) use ($input) {
-            //         $team = $this->assignOrCreateTeam($user);
-            //         $user->switchTeam($team);
-            //         setPermissionsTeamId($team->id);
-            //         $user->assignRole($input['role']);
-            //     });
-            // });
 
             Log::info('User created successfully', [
                 'user_id' => $user->id,
                 'email' => $user->email,
-                'role' => $input['role'],
+                'role' => $input['role'] ?? 'tenant',
             ]);
     
             return $user;
@@ -126,8 +126,29 @@ class CreateNewUser implements CreatesNewUsers
     protected function assignOrCreateTeam(User $user): Team
     {
         $team = Team::first();
-    
+
+        if (!$team) {
+            return $this->createPersonalTeam($user);
+        }
+
         $team->users()->attach($user);
+        return $team;
+    }
+
+    /**
+     * Create a personal team for the given user.
+     */
+    protected function createPersonalTeam(User $user): Team
+    {
+        $team = Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]);
+
+        $user->ownedTeams()->save($team);
+        $user->teams()->attach($team, ['role' => 'owner']);
+
         return $team;
     }
 }
