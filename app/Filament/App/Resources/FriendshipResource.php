@@ -57,12 +57,14 @@ class FriendshipResource extends Resource
                 Tables\Columns\TextColumn::make('addressee.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'warning' => 'pending',
-                        'success' => 'accepted',
-                        'danger' => 'declined',
-                    ]),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'accepted' => 'success',
+                        'declined' => 'danger',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
