@@ -98,6 +98,7 @@ class MessageController extends Controller
             }
         }
 
+        $message->refresh();
         $message->load(['sender', 'receiver', 'attachments', 'reactions']);
 
         // Broadcast the message

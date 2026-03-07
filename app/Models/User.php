@@ -165,16 +165,17 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         return $this->hasMany(Friendship::class, 'addressee_id');
     }
 
-    public function friends()
+    public function getFriendsAttribute()
     {
-        return $this->belongsToMany(User::class, 'friendships', 'requester_id', 'addressee_id')
+        $requesterFriends = $this->belongsToMany(User::class, 'friendships', 'requester_id', 'addressee_id')
             ->wherePivot('status', 'accepted')
-            ->withTimestamps()
-            ->union(
-                $this->belongsToMany(User::class, 'friendships', 'addressee_id', 'requester_id')
-                    ->wherePivot('status', 'accepted')
-                    ->withTimestamps()
-            );
+            ->get();
+
+        $addresseeFriends = $this->belongsToMany(User::class, 'friendships', 'addressee_id', 'requester_id')
+            ->wherePivot('status', 'accepted')
+            ->get();
+
+        return $requesterFriends->merge($addresseeFriends);
     }
 
     // Follower relationships
