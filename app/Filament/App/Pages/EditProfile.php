@@ -3,9 +3,10 @@
 namespace App\Filament\App\Pages;
 
 use App\Models\User;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 
 class EditProfile extends Page
@@ -24,24 +25,23 @@ class EditProfile extends Page
         ]);
     }
 
-    protected function getFormSchema(): array
+    public function form(Schema $schema): Schema
     {
-        return [
-            TextInput::make('name')
-                ->label('Name')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('email')
-                ->label('Email Address')
-                ->required()
-                ->maxLength(255),
-        ];
+        return $schema
+            ->schema([
+                TextInput::make('name')
+                    ->label('Name')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->label('Email Address')
+                    ->required()
+                    ->maxLength(255),
+            ]);
     }
 
     public function submit()
     {
-        $this->validate();
-
         $state = $this->form->getState();
 
         $this->user->forceFill([
@@ -49,7 +49,10 @@ class EditProfile extends Page
             'email' => $state['email'],
         ])->save();
 
-        Filament::notify('success', 'Your profile has been updated.');
+        Notification::make()
+            ->title('Your profile has been updated.')
+            ->success()
+            ->send();
     }
 
     public function getBreadcrumbs(): array

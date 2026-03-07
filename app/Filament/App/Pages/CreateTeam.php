@@ -3,12 +3,10 @@
 namespace App\Filament\App\Pages;
 
 use Filament\Support\Enums\Width;
-use App\Models\User;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Tenancy\RegisterTenant;
+use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class CreateTeam extends RegisterTenant
 {
@@ -23,14 +21,15 @@ class CreateTeam extends RegisterTenant
         // abort_unless(Filament::auth()->user()->canCreateTeams(), 403);
     }
 
-    protected function getFormSchema(): array
+    public function form(Schema $schema): Schema
     {
-        return [
-            TextInput::make('name')
-                ->label('Team Name')
-                ->required()
-                ->maxLength(255),
-        ];
+        return $schema
+            ->schema([
+                TextInput::make('name')
+                    ->label('Team Name')
+                    ->required()
+                    ->maxLength(255),
+            ]);
     }
 
     protected function handleRegistration(array $data): Model
