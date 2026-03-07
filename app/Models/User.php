@@ -359,7 +359,18 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
      */
     public function getPrivacySettings(): UserPrivacySetting
     {
-        return $this->privacySettings()->firstOrCreate(['user_id' => $this->id]);
+        return $this->privacySettings()->firstOrCreate(
+            ['user_id' => $this->id],
+            [
+                'profile_visibility' => 'public',
+                'show_email' => false,
+                'show_birth_date' => true,
+                'show_location' => true,
+                'allow_friend_requests' => true,
+                'allow_messages_from_non_friends' => true,
+                'show_online_status' => true,
+            ]
+        );
     }
 
     /**

@@ -26,6 +26,13 @@ class CreateUserPrivacySettings
         if (!$user->privacySettings) {
             UserPrivacySetting::create([
                 'user_id' => $user->id,
+                'profile_visibility' => 'public',
+                'show_email' => false,
+                'show_birth_date' => true,
+                'show_location' => true,
+                'allow_friend_requests' => true,
+                'allow_messages_from_non_friends' => true,
+                'show_online_status' => true,
             ]);
         }
     }

@@ -23,11 +23,13 @@ class GroupSearchController extends Controller
             'privacy' => 'nullable|in:public,private',
         ]);
 
+        $searchQuery = $request->input('query');
+
         $query = Group::query()
             ->where('is_active', true)
-            ->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->query . '%')
-                  ->orWhere('description', 'like', '%' . $request->query . '%');
+            ->where(function ($q) use ($searchQuery) {
+                $q->where('name', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('description', 'like', '%' . $searchQuery . '%');
             });
 
         // Filter by privacy
