@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installation script for the social-network-laravel project.
+# Setup script for the Liberu Social Network project.
 #
 # This script provides installation options for Standalone, Docker, or Kubernetes deployments.
 # It handles composer and npm installations with fallback logic and error checking.
@@ -73,7 +73,7 @@ ensure_composer() {
     print_info "Downloading Composer installer..."
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 
-    # Verify installer (optional but recommended)
+    # Install Composer locally
     print_info "Installing Composer locally..."
     php composer-setup.php --quiet
 
@@ -322,7 +322,7 @@ install_standalone() {
     echo ""
 
     # Run optimization commands for Laravel
-    print_header "�� PHP ARTISAN OPTIMIZE:CLEAR"
+    print_header "🎬 PHP ARTISAN OPTIMIZE:CLEAR"
     php artisan optimize:clear
     php artisan route:clear
 
@@ -338,11 +338,11 @@ install_standalone() {
         case $cond in
             [Yy]* )
                 print_success "Starting server..."
-                php artisan serve
+                php artisan octane:start
                 break
                 ;;
             [Nn]* )
-                print_success "Installation complete. You can start the server later with: php artisan serve"
+                print_success "Installation complete. Start with: php artisan octane:start"
                 exit 0
                 ;;
             * )
@@ -393,7 +393,7 @@ install_docker() {
 
     if [ $? -eq 0 ]; then
         print_success "Docker containers started successfully"
-        print_info "Your application should be available at http://localhost"
+        print_info "Your application should be available at http://localhost:8000"
     else
         print_error "Failed to start Docker containers"
         exit 1
@@ -452,7 +452,7 @@ install_kubernetes() {
 # Main installation menu
 main() {
     clear
-    print_header "SOCIAL-NETWORK-LARAVEL INSTALLER"
+    print_header "LIBERU SOCIAL NETWORK - INSTALLER"
 
     echo "Please select installation type:"
     echo ""
