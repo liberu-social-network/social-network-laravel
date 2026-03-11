@@ -3,6 +3,10 @@
 namespace App\Filament\App\Resources;
 
 use App\Models\Friendship;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
@@ -78,21 +82,21 @@ class FriendshipResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('accept')
+                EditAction::make(),
+                Action::make('accept')
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->visible(fn (Friendship $record) => $record->status === 'pending' && $record->addressee_id === auth()->id())
                     ->action(fn (Friendship $record) => $record->update(['status' => 'accepted'])),
-                Tables\Actions\Action::make('reject')
+                Action::make('reject')
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
                     ->visible(fn (Friendship $record) => $record->status === 'pending' && $record->addressee_id === auth()->id())
                     ->action(fn (Friendship $record) => $record->update(['status' => 'declined'])),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

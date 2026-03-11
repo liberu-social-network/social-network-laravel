@@ -3,6 +3,9 @@
 namespace App\Filament\App\Resources;
 
 use App\Models\Follower;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
@@ -65,7 +68,7 @@ class FollowerResource extends Resource
                     ->query(fn (Builder $query) => $query->where('follower_id', auth()->id())),
             ])
             ->actions([
-                Tables\Actions\Action::make('unfollow')
+                Action::make('unfollow')
                     ->icon('heroicon-o-user-minus')
                     ->color('danger')
                     ->visible(fn (Follower $record) => $record->follower_id === auth()->id())
@@ -73,8 +76,8 @@ class FollowerResource extends Resource
                     ->action(fn (Follower $record) => $record->delete()),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
