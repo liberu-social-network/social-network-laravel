@@ -25,7 +25,6 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
 {
     use HasApiTokens;
     use HasConnectedAccounts;
-    use HasRoles;
     use HasFactory;
     use HasProfilePhoto {
         HasProfilePhoto::profilePhotoUrl as getPhotoUrl;
@@ -33,7 +32,10 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     use Notifiable;
     use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
-    use HasTeams;
+    use HasRoles, HasTeams {
+        HasTeams::teams insteadof HasRoles;
+        HasRoles::teams as roleTeams;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -167,13 +169,15 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
 
     public function friends()
     {
+        // Use select('users.*') on both sides so SQLite UNION column counts match.
         return $this->belongsToMany(User::class, 'friendships', 'requester_id', 'addressee_id')
             ->wherePivot('status', 'accepted')
-            ->withTimestamps()
+            ->select('users.*')
             ->union(
-                $this->belongsToMany(User::class, 'friendships', 'addressee_id', 'requester_id')
-                    ->wherePivot('status', 'accepted')
-                    ->withTimestamps()
+                User::select('users.*')
+                    ->join('friendships', 'users.id', '=', 'friendships.requester_id')
+                    ->where('friendships.addressee_id', $this->id)
+                    ->where('friendships.status', 'accepted')
             );
     }
 
