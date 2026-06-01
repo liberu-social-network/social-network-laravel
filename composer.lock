@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29b66b42df5d0650f79c346905c8c225",
+    "content-hash": "13295f65dae8ce4bf4cd62e38df9f70f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -443,6 +443,92 @@
                 }
             ],
             "time": "2026-02-10T14:33:43+00:00"
+        },
+        {
+            "name": "bursteri/socialstream",
+            "version": "v7.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bursteri/socialstream.git",
+                "reference": "eceba9d03fa1617413d45a8c9362ee763456f9b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bursteri/socialstream/zipball/eceba9d03fa1617413d45a8c9362ee763456f9b8",
+                "reference": "eceba9d03fa1617413d45a8c9362ee763456f9b8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^11.0|^12.0|^13.0",
+                "laravel/socialite": "^5.18",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "inertiajs/inertia-laravel": "^2.0",
+                "laravel/breeze": "^2.3",
+                "laravel/jetstream": "^5.0",
+                "laravel/sanctum": "^4.0",
+                "livewire/livewire": "^3.5.0",
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "orchestra/testbench-core": "^9.9.1|^10.0|^11.0",
+                "pestphp/pest": "^2.0|^3.0",
+                "pestphp/pest-plugin-laravel": "^2.2|^3.0",
+                "phpunit/phpunit": "^10.5.35|^11.5.3|^12.0.1|^13.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JoelButcher\\Socialstream\\SocialstreamServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JoelButcher\\Socialstream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joel Butcher",
+                    "email": "joel@joelbutcher.co.uk",
+                    "role": "Original Author"
+                },
+                {
+                    "name": "Robin He",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "OAuth for Laravel, simplified. Fork of joelbutcher/socialstream with Laravel 13 support.",
+            "keywords": [
+                "SocialStream",
+                "laravel",
+                "laravel socialite",
+                "oauth"
+            ],
+            "support": {
+                "issues": "https://github.com/bursteri/socialstream/issues",
+                "source": "https://github.com/bursteri/socialstream"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/joelbutcher",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/joelbutcher",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-04-03T01:46:28+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -2688,83 +2774,6 @@
                 }
             ],
             "time": "2026-05-23T22:00:21+00:00"
-        },
-        {
-            "name": "joelbutcher/socialstream",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "./packages/socialstream",
-                "reference": "cccff8f0b58b036d131ff7458df4dd1ce083088d"
-            },
-            "require": {
-                "illuminate/contracts": "^11.0|^12.0|^13.0",
-                "laravel/socialite": "^5.18",
-                "php": "^8.2"
-            },
-            "require-dev": {
-                "inertiajs/inertia-laravel": "^2.0",
-                "laravel/breeze": "^2.3",
-                "laravel/jetstream": "^5.0",
-                "laravel/sanctum": "^4.0",
-                "livewire/livewire": "^3.5.0",
-                "mockery/mockery": "^1.6",
-                "orchestra/testbench": "^9.0|^10.0",
-                "orchestra/testbench-core": "^9.9.1|^10.0",
-                "pestphp/pest": "^2.0|^3.0",
-                "pestphp/pest-plugin-laravel": "^2.2|^3.0",
-                "phpunit/phpunit": "^10.5.35|^11.5.3|^12.0.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "6.x-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "JoelButcher\\Socialstream\\SocialstreamServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JoelButcher\\Socialstream\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "JoelButcher\\Socialstream\\Tests\\": "tests/",
-                    "App\\": [
-                        "stubs/app",
-                        "stubs/jetstream/app"
-                    ],
-                    "Database\\Factories\\": "workbench/database/factories/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joel Butcher",
-                    "email": "joel@joelbutcher.co.uk"
-                }
-            ],
-            "description": "Get started with OAuth and Laravel",
-            "keywords": [
-                "laravel",
-                "laravel socialite",
-                "oauth",
-                "socialstream"
-            ],
-            "support": {
-                "issues": "https://github.com/joelbutcher/socialstream/issues",
-                "source": "https://github.com/joelbutcher/socialstream"
-            },
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
@@ -15720,9 +15729,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "joelbutcher/socialstream": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

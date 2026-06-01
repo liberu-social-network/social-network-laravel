@@ -73,6 +73,33 @@ class SocialstreamRegistrationTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
+    public function test_socialstream_config_has_social_media_providers(): void
+    {
+        $providers = config('socialstream.providers', []);
+        $this->assertIsArray($providers);
+
+        $expected = [
+            Providers::bitbucket(),
+            Providers::facebook(),
+            Providers::github(),
+            Providers::gitlab(),
+            Providers::google(),
+            Providers::linkedin(),
+            Providers::linkedinOpenId(),
+            Providers::slack(),
+            Providers::twitterOAuth2(),
+        ];
+
+        foreach ($expected as $provider) {
+            $this->assertContains($provider, $providers);
+        }
+
+        $this->assertNotContains(Providers::twitterOAuth1(), $providers);
+    }
+
+    /**
+     * @return array<int, array<int, string>>
+     */
     public static function socialiteProvidersDataProvider(): array
     {
         return [
@@ -84,7 +111,6 @@ class SocialstreamRegistrationTest extends TestCase
             [Providers::linkedin()],
             [Providers::linkedinOpenId()],
             [Providers::slack()],
-            [Providers::twitterOAuth1()],
             [Providers::twitterOAuth2()],
         ];
     }
