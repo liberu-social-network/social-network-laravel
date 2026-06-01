@@ -11,6 +11,7 @@ class EncryptCookies extends Middleware
      *
      * @var array<int, string>
      */
+    #[\Override]
     protected $except = [
         //
     ];

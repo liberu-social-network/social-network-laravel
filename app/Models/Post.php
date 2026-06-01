@@ -9,6 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'user_id',
         'group_id',

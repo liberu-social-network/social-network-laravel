@@ -9,6 +9,7 @@ class Menu extends Model
 {
     use HasFactory, SoftDeletes;
 
+    #[\Override]
     protected $fillable = [
         'name',
         'url',

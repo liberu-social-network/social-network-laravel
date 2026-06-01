@@ -27,14 +27,19 @@ use App\Filament\Admin\Resources\ModuleResource\Pages;
 
 class ModuleResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = null;
 
+    #[\Override]
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-puzzle-piece';
 
+    #[\Override]
     protected static string | \UnitEnum | null $navigationGroup = 'System';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Modules';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -51,6 +56,7 @@ class ModuleResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -148,6 +154,7 @@ class ModuleResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function getEloquentQuery(): Builder
     {
         $moduleManager = app(ModuleManager::class);
@@ -190,6 +197,7 @@ class ModuleResource extends Resource
         return new $query($modules);
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

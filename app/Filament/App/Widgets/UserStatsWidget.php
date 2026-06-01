@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserStatsWidget extends BaseWidget
 {
+    #[\Override]
     protected function getStats(): array
     {
         $user = Auth::user();

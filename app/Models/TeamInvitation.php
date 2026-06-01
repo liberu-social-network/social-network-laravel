@@ -14,12 +14,14 @@ class TeamInvitation extends JetstreamTeamInvitation
      *
      * @var array<int, string>
      */
+    #[\Override]
     protected $fillable = [
         'email',
         'role',
         'token',
     ];
 
+    #[\Override]
     protected static function booted(): void
     {
         static::creating(function (self $invitation) {
@@ -32,6 +34,7 @@ class TeamInvitation extends JetstreamTeamInvitation
     /**
      * Get the team that the invitation belongs to.
      */
+    #[\Override]
     public function team(): BelongsTo
     {
         return $this->belongsTo(Jetstream::teamModel());

@@ -12,12 +12,16 @@ use Filament\Tables\Table;
 
 class MessageResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Message::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Social';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -41,6 +45,7 @@ class MessageResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -89,6 +94,7 @@ class MessageResource extends Resource
             ->defaultSort('created_at', 'desc');
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

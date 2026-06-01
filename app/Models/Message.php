@@ -11,6 +11,7 @@ class Message extends Model
 {
     use HasFactory, SoftDeletes;
 
+    #[\Override]
     protected $fillable = [
         'conversation_id',
         'sender_id',
@@ -21,10 +22,12 @@ class Message extends Model
         'read_at',
     ];
 
+    #[\Override]
     protected $casts = [
         'read_at' => 'datetime',
     ];
 
+    #[\Override]
     protected $appends = ['decrypted_content'];
 
     public function sender()

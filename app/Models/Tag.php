@@ -10,6 +10,7 @@ class Tag extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'name',
         'slug',

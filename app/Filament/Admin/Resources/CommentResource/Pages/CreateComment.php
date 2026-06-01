@@ -7,5 +7,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateComment extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = CommentResource::class;
 }

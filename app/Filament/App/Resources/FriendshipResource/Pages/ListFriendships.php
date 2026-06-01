@@ -8,8 +8,10 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListFriendships extends ListRecords
 {
+    #[\Override]
     protected static string $resource = FriendshipResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [

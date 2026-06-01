@@ -7,5 +7,6 @@ use App\Filament\Admin\Resources\MenuResource;
 
 class EditMenu extends EditRecord
 {
+    #[\Override]
     protected static string $resource = MenuResource::class;
 }

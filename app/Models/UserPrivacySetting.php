@@ -9,6 +9,7 @@ class UserPrivacySetting extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'user_id',
         'profile_visibility',
@@ -20,6 +21,7 @@ class UserPrivacySetting extends Model
         'show_online_status',
     ];
 
+    #[\Override]
     protected $casts = [
         'show_email' => 'boolean',
         'show_birth_date' => 'boolean',

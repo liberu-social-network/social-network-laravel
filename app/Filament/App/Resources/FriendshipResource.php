@@ -12,14 +12,19 @@ use Illuminate\Database\Eloquent\Builder;
 
 class FriendshipResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Friendship::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Friend Requests';
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Social';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -42,6 +47,7 @@ class FriendshipResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -97,6 +103,7 @@ class FriendshipResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -104,6 +111,7 @@ class FriendshipResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

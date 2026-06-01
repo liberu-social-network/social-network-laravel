@@ -8,8 +8,10 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditFriendship extends EditRecord
 {
+    #[\Override]
     protected static string $resource = FriendshipResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [

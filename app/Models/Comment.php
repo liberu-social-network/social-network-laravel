@@ -9,6 +9,7 @@ class Comment extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'user_id',
         'post_id',

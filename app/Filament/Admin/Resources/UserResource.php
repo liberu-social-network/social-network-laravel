@@ -15,16 +15,22 @@ use Filament\Forms\Components\Section;
 
 class UserResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = User::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Administration';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Users';
 
+    #[\Override]
     protected static ?int $navigationSort = 1;
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -75,6 +81,7 @@ class UserResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -131,6 +138,7 @@ class UserResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -138,6 +146,7 @@ class UserResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [
@@ -147,6 +156,7 @@ class UserResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->with('roles');

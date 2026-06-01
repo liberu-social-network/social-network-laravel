@@ -8,8 +8,10 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewComment extends ViewRecord
 {
+    #[\Override]
     protected static string $resource = CommentResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [

@@ -13,6 +13,7 @@ class CreateTeam extends CreateTeamForm
      *
      * @return void
      */
+    #[\Override]
     public function createTeam()
     {
         $this->validate();

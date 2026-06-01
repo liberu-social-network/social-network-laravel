@@ -42,6 +42,7 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
      *
      * @var array<int, string>
      */
+    #[\Override]
     protected $fillable = [
         'name',
         'email',
@@ -54,6 +55,7 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
      *
      * @var array<int, string>
      */
+    #[\Override]
     protected $hidden = [
         'password',
         'remember_token',
@@ -66,6 +68,7 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
      *
      * @var array<int, string>
      */
+    #[\Override]
     protected $appends = [
         'profile_photo_url',
     ];
@@ -75,6 +78,7 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
      *
      * @return array<string, string>
      */
+    #[\Override]
     protected function casts(): array
     {
         return [
@@ -167,18 +171,17 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         return $this->hasMany(Friendship::class, 'addressee_id');
     }
 
-    public function friends()
+    public function getFriendsAttribute(): Collection
     {
-        // Use select('users.*') on both sides so SQLite UNION column counts match.
-        return $this->belongsToMany(User::class, 'friendships', 'requester_id', 'addressee_id')
-            ->wherePivot('status', 'accepted')
-            ->select('users.*')
-            ->union(
-                User::select('users.*')
-                    ->join('friendships', 'users.id', '=', 'friendships.requester_id')
-                    ->where('friendships.addressee_id', $this->id)
-                    ->where('friendships.status', 'accepted')
-            );
+        $sentIds = Friendship::where('requester_id', $this->id)
+            ->where('status', 'accepted')
+            ->pluck('addressee_id');
+
+        $receivedIds = Friendship::where('addressee_id', $this->id)
+            ->where('status', 'accepted')
+            ->pluck('requester_id');
+
+        return User::whereIn('id', $sentIds->merge($receivedIds))->get();
     }
 
     // Follower relationships

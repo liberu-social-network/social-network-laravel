@@ -12,11 +12,13 @@ class ModuleCommand extends Command
     /**
      * The name and signature of the console command.
      */
+    #[\Override]
     protected $signature = 'module {action} {name?} {--force}';
 
     /**
      * The console command description.
      */
+    #[\Override]
     protected $description = 'Manage application modules';
 
     protected ModuleManager $moduleManager;
