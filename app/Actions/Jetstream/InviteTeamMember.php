@@ -15,6 +15,7 @@ use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Mail\TeamInvitation;
 use Laravel\Jetstream\Rules\Role;
+use Illuminate\Support\Str;
 
 class InviteTeamMember implements InvitesTeamMembers
 {
@@ -32,6 +33,7 @@ class InviteTeamMember implements InvitesTeamMembers
         $invitation = $team->teamInvitations()->create([
             'email' => $email,
             'role'  => $role,
+            'token' => Str::random(64),
         ]);
 
         Mail::to($email)->send(new TeamInvitation($invitation));

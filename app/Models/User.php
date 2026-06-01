@@ -30,7 +30,7 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         HasProfilePhoto::profilePhotoUrl as getPhotoUrl;
     }
     use Notifiable;
-    use SetsProfilePhotoFromUrl;
+    // use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
     use HasRoles, HasTeams {
         HasTeams::teams insteadof HasRoles;
