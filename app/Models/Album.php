@@ -9,6 +9,7 @@ class Album extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'user_id',
         'name',

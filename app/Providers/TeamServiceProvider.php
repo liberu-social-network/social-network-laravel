@@ -20,6 +20,7 @@ class TeamServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->bind(\FamilyTree365\LaravelGedcom\Utils\BatchData::class, BatchData::class);

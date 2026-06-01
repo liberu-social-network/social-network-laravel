@@ -9,6 +9,7 @@ class Follower extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'follower_id',
         'following_id',

@@ -7,5 +7,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateMessage extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = MessageResource::class;
 }

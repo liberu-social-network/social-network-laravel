@@ -9,6 +9,7 @@ class Group extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'name',
         'description',
@@ -18,6 +19,7 @@ class Group extends Model
         'is_active',
     ];
 
+    #[\Override]
     protected $casts = [
         'is_active' => 'boolean',
     ];

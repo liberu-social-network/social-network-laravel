@@ -9,6 +9,7 @@ class Friendship extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'requester_id',
         'addressee_id',

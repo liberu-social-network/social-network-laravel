@@ -8,8 +8,10 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditMessage extends EditRecord
 {
+    #[\Override]
     protected static string $resource = MessageResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [

@@ -10,12 +10,14 @@ class Conversation extends Model
 {
     use HasFactory, SoftDeletes;
 
+    #[\Override]
     protected $fillable = [
         'name',
         'type',
         'created_by',
     ];
 
+    #[\Override]
     protected $casts = [
         'type' => 'string',
     ];

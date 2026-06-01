@@ -17,12 +17,16 @@ class UserSearch extends Page implements HasTable
 {
     use InteractsWithTable;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-magnifying-glass';
 
+    #[\Override]
     protected string $view = 'filament.app.pages.user-search';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Search Users';
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Social';
 
     public ?string $search = '';

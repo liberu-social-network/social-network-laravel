@@ -11,6 +11,7 @@ class Activity extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'user_id',
         'actor_id',
@@ -20,6 +21,7 @@ class Activity extends Model
         'data',
     ];
 
+    #[\Override]
     protected $casts = [
         'data' => 'array',
     ];

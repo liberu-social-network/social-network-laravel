@@ -9,6 +9,7 @@ class Like extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'post_id',
         'user_id',

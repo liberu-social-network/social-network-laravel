@@ -12,14 +12,19 @@ use Illuminate\Database\Eloquent\Builder;
 
 class FollowerResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Follower::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Followers';
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Social';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -35,6 +40,7 @@ class FollowerResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -79,6 +85,7 @@ class FollowerResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -86,6 +93,7 @@ class FollowerResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

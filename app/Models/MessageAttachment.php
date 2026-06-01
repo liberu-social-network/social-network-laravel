@@ -9,6 +9,7 @@ class MessageAttachment extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'message_id',
         'filename',
@@ -18,6 +19,7 @@ class MessageAttachment extends Model
         'path',
     ];
 
+    #[\Override]
     protected $casts = [
         'size' => 'integer',
     ];

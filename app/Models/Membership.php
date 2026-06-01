@@ -11,5 +11,6 @@ class Membership extends JetstreamMembership
      *
      * @var bool
      */
+    #[\Override]
     public $incrementing = true;
 }

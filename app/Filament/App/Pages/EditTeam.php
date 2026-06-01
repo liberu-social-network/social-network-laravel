@@ -11,6 +11,7 @@ use Filament\Schemas\Schema;
 
 class EditTeam extends EditTenantProfile
 {
+    #[\Override]
     protected string $view = 'filament.pages.edit-team';
 
     public $name = '';
@@ -20,11 +21,13 @@ class EditTeam extends EditTenantProfile
         return 'Edit Team';
     }
 
+    #[\Override]
     public function mount(): void
     {
         abort_unless($this->user()->canCreateTeams(), 403);
     }
 
+    #[\Override]
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -52,6 +55,7 @@ class EditTeam extends EditTenantProfile
         return redirect()->route('filament.pages.edit-team', ['team' => $team]);
     }
 
+    #[\Override]
     public function getBreadcrumbs(): array
     {
         return [

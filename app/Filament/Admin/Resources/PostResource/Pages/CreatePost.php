@@ -7,5 +7,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreatePost extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = PostResource::class;
 }

@@ -9,6 +9,7 @@ class Profile extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'user_id',
         'gender',
@@ -17,6 +18,7 @@ class Profile extends Model
         'website',
     ];
 
+    #[\Override]
     protected $casts = [
         'birth_date' => 'date',
     ];

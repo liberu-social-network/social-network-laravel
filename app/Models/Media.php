@@ -9,6 +9,7 @@ class Media extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'user_id',
         'post_id',
@@ -26,6 +27,7 @@ class Media extends Model
         'duration',
     ];
 
+    #[\Override]
     protected $casts = [
         'file_size' => 'integer',
         'width' => 'integer',

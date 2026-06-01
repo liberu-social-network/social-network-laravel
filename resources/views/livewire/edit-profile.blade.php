@@ -17,9 +17,12 @@
             <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <div class="flex-shrink-0">
                     @if ($profile_photo)
-                        <img src="{{ $profile_photo->temporaryUrl() }}" 
-                             alt="New profile photo" 
+                        @php try { $previewUrl = $profile_photo->temporaryUrl(); } catch (\Exception $e) { $previewUrl = null; } @endphp
+                        @if ($previewUrl)
+                        <img src="{{ $previewUrl }}"
+                             alt="New profile photo"
                              class="w-24 h-24 rounded-full object-cover">
+                        @endif
                     @else
                         <img src="{{ $currentPhotoUrl }}" 
                              alt="Current profile photo" 

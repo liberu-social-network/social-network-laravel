@@ -13,12 +13,16 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CommentResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Comment::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Content';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -41,6 +45,7 @@ class CommentResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -84,6 +89,7 @@ class CommentResource extends Resource
             ->defaultSort('created_at', 'desc');
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -91,6 +97,7 @@ class CommentResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

@@ -9,6 +9,7 @@ class GroupMember extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'group_id',
         'user_id',

@@ -13,12 +13,16 @@ use Illuminate\Database\Eloquent\Builder;
 
 class PostResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Post::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Content';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -54,6 +58,7 @@ class PostResource extends Resource
             ]);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -112,6 +117,7 @@ class PostResource extends Resource
             ->defaultSort('created_at', 'desc');
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [
@@ -119,6 +125,7 @@ class PostResource extends Resource
         ];
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

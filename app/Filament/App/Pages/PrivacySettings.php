@@ -13,16 +13,22 @@ use Illuminate\Support\Facades\Auth;
 
 class PrivacySettings extends Page
 {
+    #[\Override]
     protected string $view = 'filament.pages.privacy-settings';
 
+    #[\Override]
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-shield-check';
 
+    #[\Override]
     protected static string | \UnitEnum | null $navigationGroup = 'Account';
 
+    #[\Override]
     protected static ?int $navigationSort = 10;
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Privacy Settings';
 
+    #[\Override]
     protected static ?string $title = 'Privacy Settings';
 
     public ?array $data = [];
@@ -111,6 +117,7 @@ class PrivacySettings extends Page
             ->send();
     }
 
+    #[\Override]
     public static function shouldRegisterNavigation(): bool
     {
         return true;

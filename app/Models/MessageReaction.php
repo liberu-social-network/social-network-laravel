@@ -9,6 +9,7 @@ class MessageReaction extends Model
 {
     use HasFactory;
 
+    #[\Override]
     protected $fillable = [
         'message_id',
         'user_id',

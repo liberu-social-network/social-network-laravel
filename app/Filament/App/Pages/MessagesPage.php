@@ -6,14 +6,19 @@ use Filament\Pages\Page;
 
 class MessagesPage extends Page
 {
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
+    #[\Override]
     protected string $view = 'filament.app.pages.messages';
 
+    #[\Override]
     protected static ?string $title = 'Messages';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Messages';
 
+    #[\Override]
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationBadge(): ?string

@@ -10,17 +10,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class CreateTeam extends RegisterTenant
 {
+    #[\Override]
     protected string $view = 'filament.pages.create-team';
 
     public $name = '';
 
+    #[\Override]
     protected Width|string|null $maxWidth = '2xl';
 
+    #[\Override]
     public function mount(): void
     {
         // abort_unless(Filament::auth()->user()->canCreateTeams(), 403);
     }
 
+    #[\Override]
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -32,6 +36,7 @@ class CreateTeam extends RegisterTenant
             ]);
     }
 
+    #[\Override]
     protected function handleRegistration(array $data): Model
     {
         return app(\App\Actions\Jetstream\CreateTeam::class)->create(auth()->user(), $data);

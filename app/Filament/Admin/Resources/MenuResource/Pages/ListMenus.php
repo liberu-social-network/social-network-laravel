@@ -7,5 +7,6 @@ use App\Filament\Admin\Resources\MenuResource;
 
 class ListMenus extends ListRecords
 {
+    #[\Override]
     protected static string $resource = MenuResource::class;
 }
