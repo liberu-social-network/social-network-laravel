@@ -8,6 +8,7 @@ use JoelButcher\Socialstream\Providers;
 use Laravel\Fortify\Features as FortifyFeatures;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
+use Illuminate\Support\Str;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -57,7 +58,8 @@ class SocialstreamRegistrationTest extends TestCase
             ->setRefreshToken('refresh-token')
             ->setExpiresIn(3600);
 
-        $provider = Mockery::mock('Laravel\\Socialite\\Two\\'.$socialiteProvider.'Provider');
+        $providerClass = 'Laravel\\Socialite\\Two\\'.Str::studly(str_replace(['-','_'], ' ', $socialiteProvider)).'Provider';
+        $provider = Mockery::mock($providerClass);
         $provider->shouldReceive('user')->once()->andReturn($user);
 
         Socialite::shouldReceive('driver')->once()->with($socialiteProvider)->andReturn($provider);
