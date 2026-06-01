@@ -28,7 +28,7 @@ class FeedTest extends TestCase
     {
         $user = User::factory()->create();
         $friend = User::factory()->create();
-        
+
         // Create friendship
         Friendship::factory()->create([
             'requester_id' => $user->id,
