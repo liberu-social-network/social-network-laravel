@@ -1,0 +1,72 @@
+{
+    "name": "joelbutcher/socialstream",
+    "description": "Get started with OAuth and Laravel",
+    "keywords": [
+        "socialstream",
+        "laravel",
+        "laravel socialite",
+        "oauth"
+    ],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/joelbutcher/socialstream/issues",
+        "source": "https://github.com/joelbutcher/socialstream"
+    },
+    "authors": [
+        {
+            "name": "Joel Butcher",
+            "email": "joel@joelbutcher.co.uk"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/contracts": "^11.0|^12.0|^13.0",
+        "laravel/socialite": "^5.18"
+    },
+    "require-dev": {
+        "inertiajs/inertia-laravel": "^2.0",
+        "laravel/breeze": "^2.3",
+        "laravel/jetstream": "^5.0",
+        "laravel/sanctum": "^4.0",
+        "livewire/livewire": "^3.5.0",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^9.0|^10.0",
+        "orchestra/testbench-core": "^9.9.1|^10.0",
+        "pestphp/pest": "^2.0|^3.0",
+        "pestphp/pest-plugin-laravel": "^2.2|^3.0",
+        "phpunit/phpunit": "^10.5.35|^11.5.3|^12.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "JoelButcher\\Socialstream\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JoelButcher\\Socialstream\\Tests\\": "tests/",
+            "App\\": [
+                "stubs/app",
+                "stubs/jetstream/app"
+            ],
+            "Database\\Factories\\": "workbench/database/factories/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "6.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "JoelButcher\\Socialstream\\SocialstreamServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
