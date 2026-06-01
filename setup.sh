@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup script for the control-panel-laravel project.
+# Setup script for the Liberu Social Network project.
 #
 # This script provides installation options for Standalone, Docker, or Kubernetes deployments.
 # It handles composer and npm installations with fallback logic and error checking.
@@ -338,11 +338,11 @@ install_standalone() {
         case $cond in
             [Yy]* )
                 print_success "Starting server..."
-                php artisan octane:start
+                php artisan serve
                 break
                 ;;
             [Nn]* )
-                print_success "Installation complete. Start with: php artisan octane:start"
+                print_success "Installation complete. Start with: php artisan serve"
                 exit 0
                 ;;
             * )
@@ -452,7 +452,7 @@ install_kubernetes() {
 # Main installation menu
 main() {
     clear
-    print_header "LIBERU CONTROL PANEL - INSTALLER"
+    print_header "LIBERU SOCIAL NETWORK - INSTALLER"
 
     echo "Please select installation type:"
     echo ""

@@ -3,6 +3,7 @@
 namespace App\Filament\App\Pages;
 
 use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
@@ -66,7 +67,7 @@ class UserSearch extends Page implements HasTable
                     ->color('info'),
             ])
             ->actions([
-                Tables\Actions\Action::make('send_friend_request')
+                Action::make('send_friend_request')
                     ->label('Add Friend')
                     ->icon('heroicon-o-user-plus')
                     ->color('success')
@@ -75,7 +76,7 @@ class UserSearch extends Page implements HasTable
                         Auth::user()->sendFriendRequest($record);
                         $this->notify('success', 'Friend request sent!');
                     }),
-                Tables\Actions\Action::make('follow')
+                Action::make('follow')
                     ->label('Follow')
                     ->icon('heroicon-o-plus-circle')
                     ->color('primary')
@@ -84,7 +85,7 @@ class UserSearch extends Page implements HasTable
                         Auth::user()->follow($record);
                         $this->notify('success', 'Now following user!');
                     }),
-                Tables\Actions\Action::make('unfollow')
+                Action::make('unfollow')
                     ->label('Unfollow')
                     ->icon('heroicon-o-minus-circle')
                     ->color('danger')
