@@ -1,28 +1,93 @@
 <?php
 
+use JoelButcher\Socialstream\Features;
+use JoelButcher\Socialstream\Providers;
+
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Socialstream Guard
+    |--------------------------------------------------------------------------
+    */
+
+    'guard' => 'web',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Socialstream Middleware
+    |--------------------------------------------------------------------------
+    */
+
+    'middleware' => ['web'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Socialstream Prompt
+    |--------------------------------------------------------------------------
+    */
+
+    'prompt' => env('SOCIALSTREAM_PROMPT', 'Or Login Via'),
+
     /*
     |--------------------------------------------------------------------------
     | Socialstream Providers
     |--------------------------------------------------------------------------
     |
-    | Lists the social providers that the application should expose. Twitter
-    | OAuth 1.0 ("twitter") is intentionally excluded because it requires
-    | live API keys for redirects. Twitter OAuth 2.0 is enabled.
+    | Twitter OAuth 1.0 ("twitter") is intentionally excluded because it
+    | requires live API keys even for the redirect step.
     |
     */
+
     'providers' => [
-        'bitbucket',
-        'facebook',
-        'github',
-        'gitlab',
-        'google',
-        'linkedin',
-        'linkedin-openid',
-        'slack',
-        'twitter-oauth-2',
+        Providers::bitbucket(),
+        Providers::facebook(),
+        Providers::github(),
+        Providers::gitlab(),
+        Providers::google(),
+        Providers::linkedin(),
+        Providers::linkedinOpenId(),
+        Providers::slack(),
+        Providers::twitterOAuth2(),
     ],
 
-    /* Prompt shown above social buttons */
-    'prompt' => env('SOCIALSTREAM_PROMPT', 'Or Login Via'),
+    /*
+    |--------------------------------------------------------------------------
+    | Features
+    |--------------------------------------------------------------------------
+    */
+
+    'features' => [
+        // Features::generateMissingEmails(),
+        // Features::createAccountOnFirstLogin(),
+        // Features::globalLogin(),
+        // Features::authExistingUnlinkedUsers(),
+        Features::rememberSession(),
+        Features::providerAvatars(),
+        Features::refreshOAuthTokens(),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Home Path
+    |--------------------------------------------------------------------------
+    */
+
+    'home' => '/app',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Redirects
+    |--------------------------------------------------------------------------
+    */
+
+    'redirects' => [
+        'login'                => '/app',
+        'register'             => '/app',
+        'login-failed'         => '/login',
+        'registration-failed'  => '/register',
+        'provider-linked'      => '/user/profile',
+        'provider-link-failed' => '/user/profile',
+    ],
+
 ];
