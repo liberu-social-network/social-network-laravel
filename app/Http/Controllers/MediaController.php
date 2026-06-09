@@ -51,7 +51,7 @@ class MediaController extends Controller
             'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,mov,avi,wmv|max:51200', // 50MB max
             'album_id' => 'nullable|exists:albums,id',
             'description' => 'nullable|string|max:1000',
-            'privacy' => 'required|in:public,friends_only,private',
+            'privacy' => 'nullable|in:public,friends_only,private',
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:50',
         ]);
@@ -89,7 +89,7 @@ class MediaController extends Controller
             'mime_type' => $mimeType,
             'file_size' => $file->getSize(),
             'description' => $request->description,
-            'privacy' => $request->privacy,
+            'privacy' => $request->privacy ?? 'public',
             'width' => $width,
             'height' => $height,
         ]);

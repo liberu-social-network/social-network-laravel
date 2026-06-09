@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\EditProfile;
-use App\Http\Livewire\ShowProfile;
+use App\Livewire\EditProfile;
+use App\Livewire\ShowProfile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;

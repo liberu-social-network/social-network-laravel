@@ -18,6 +18,10 @@ class GroupSearchController extends Controller
      */
     public function search(Request $request)
     {
+        if ($request->has('q') && ! $request->has('query')) {
+            $request->merge(['query' => $request->input('q')]);
+        }
+
         $request->validate([
             'query' => 'required|string|min:1',
             'privacy' => 'nullable|in:public,private',

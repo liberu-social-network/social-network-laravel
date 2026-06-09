@@ -90,7 +90,7 @@ class GroupController extends Controller
             ->findOrFail($id);
 
         // Check if user can view private groups
-        if ($group->privacy === 'private' && !$group->hasMember(Auth::user())) {
+        if ($group->privacy === 'private' && !$group->isOwner(Auth::user()) && !$group->hasMember(Auth::user())) {
             return response()->json([
                 'message' => 'You do not have permission to view this group',
             ], 403);
